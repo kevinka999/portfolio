@@ -22,3 +22,5 @@ export const windowInfos: WindowsInfo = {
     title: "Projects",
   },
 };
+
+export const taskbarHeight = 40;

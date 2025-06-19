@@ -1,15 +1,15 @@
 import React from "react";
-import { DesktopIcon } from "./components/DesktopIcon";
-import { StartMenu } from "./components/StartMenu";
-import { Taskbar } from "./components/Taskbar";
+import { DesktopIcon, DraggableWindow, StartMenu, Taskbar } from "./components";
 import { Windows, WindowsEnum } from "./types";
 import { windowInfos } from "./const";
+import { getLastPositionOpened } from "./utils";
 
 const initialWindows: Windows = {
   [WindowsEnum.ABOUT]: {
     isOpen: true,
     isMinimized: false,
     zIndex: 1000,
+    initialPosition: { x: 100, y: 50 },
   },
   [WindowsEnum.PROJECTS]: {
     isOpen: false,
@@ -39,6 +39,80 @@ export const App = () => {
     WindowsEnum.ABOUT,
   );
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
+  const [nextZIndex, setNextZIndex] = React.useState(1001);
+
+  const bringToFront = (windowId: WindowsEnum) => {
+    setWindows((prev) => ({
+      ...prev,
+      [windowId]: {
+        ...prev[windowId],
+        isMinimized: false,
+        zIndex: nextZIndex,
+      },
+    }));
+    setActiveWindow(windowId);
+    setNextZIndex((prev) => prev + 1);
+  };
+
+  const openWindow = (windowId: WindowsEnum) => {
+    setWindows((prev) => {
+      const window = prev[windowId];
+
+      if (window.isOpen) {
+        bringToFront(windowId);
+        return prev;
+      }
+
+      const lastPositionOpened = getLastPositionOpened(prev);
+      const newWindow = {
+        ...prev,
+        [windowId]: {
+          isOpen: true,
+          isMinimized: false,
+          zIndex: nextZIndex,
+          initialPosition: {
+            x: lastPositionOpened.x + 20,
+            y: lastPositionOpened.y + 20,
+          },
+        },
+      };
+      setActiveWindow(windowId);
+      setNextZIndex((prev) => prev + 1);
+      return newWindow;
+    });
+  };
+
+  const minimizeWindow = (windowId: WindowsEnum) => {
+    setWindows((prev) => ({
+      ...prev,
+      [windowId]: { ...prev[windowId], isMinimized: true },
+    }));
+  };
+
+  const closeWindow = (windowId: WindowsEnum) => {
+    setWindows((prev) => ({
+      ...prev,
+      [windowId]: { ...prev[windowId], isOpen: false, isMinimized: false },
+    }));
+  };
+
+  const handleTaskbarClick = (windowId: WindowsEnum) => {
+    const window = windows[windowId];
+
+    if (window.isMinimized) {
+      bringToFront(windowId);
+      return;
+    }
+
+    if (
+      window.zIndex === Math.max(...Object.values(windows).map((w) => w.zIndex))
+    ) {
+      minimizeWindow(windowId);
+      return;
+    }
+
+    bringToFront(windowId);
+  };
 
   const toggleStartMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -53,18 +127,38 @@ export const App = () => {
       className="bg-win95-background flex min-h-screen flex-col overflow-hidden"
       onClick={closeStartMenu}
     >
-      <div className="relative h-full flex-grow overflow-hidden p-4"></div>
+      <div className="relative h-full flex-grow overflow-hidden p-4">
+        <div className="absolute top-4 left-4 grid grid-cols-1 gap-6">
+          {Object.keys(windows).map((itemId) => {
+            const id: WindowsEnum = itemId as WindowsEnum;
 
-      <div className="absolute top-4 left-4 grid grid-cols-1 gap-6">
-        {Object.keys(windows).map((itemId) => {
-          const id: WindowsEnum = itemId as WindowsEnum;
+            return (
+              <DesktopIcon
+                icon={windowInfos[id].icon}
+                label={windowInfos[id].title}
+                onClick={() => openWindow(id)}
+              />
+            );
+          })}
+        </div>
+
+        {Object.entries(windows).map(([windowId, windowState]) => {
+          const id: WindowsEnum = windowId as WindowsEnum;
+          if (!windowState.isOpen || windowState.isMinimized) return null;
 
           return (
-            <DesktopIcon
+            <DraggableWindow
+              key={windowId}
+              title={windowInfos[id].title}
               icon={windowInfos[id].icon}
-              label={windowInfos[id].title}
-              onClick={() => {}}
-            />
+              isActive={activeWindow === windowId}
+              onClose={() => closeWindow(windowId as WindowsEnum)}
+              onFocus={() => bringToFront(windowId as WindowsEnum)}
+              onMinimize={() => minimizeWindow(windowId as WindowsEnum)}
+              initialPosition={windowState.initialPosition}
+            >
+              page content
+            </DraggableWindow>
           );
         })}
       </div>
@@ -72,7 +166,9 @@ export const App = () => {
       <Taskbar
         windows={windows}
         activeWindow={activeWindow}
-        onWindowClick={() => {}}
+        onWindowClick={(windowId) =>
+          handleTaskbarClick(windowId as WindowsEnum)
+        }
         isMenuOpen={isMenuOpen}
         onClickMenu={toggleStartMenu}
       />
@@ -80,7 +176,8 @@ export const App = () => {
       {isMenuOpen && (
         <StartMenu
           windowsToShow={Object.keys(windows) as WindowsEnum[]}
-          onItemClick={(itemId) => {
+          onItemClick={(item) => {
+            openWindow(item as WindowsEnum);
             setIsMenuOpen(false);
           }}
         />

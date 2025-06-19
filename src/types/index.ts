@@ -6,6 +6,7 @@ export type WindowState = {
   isOpen: boolean;
   isMinimized: boolean;
   zIndex: number;
+  initialPosition?: { x: number; y: number };
 };
 
 export type WindowInfo = {

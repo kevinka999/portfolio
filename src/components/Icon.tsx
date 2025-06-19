@@ -18,7 +18,7 @@ type IconProps = {
   icon: IconAvailable;
   className?: string;
   alt?: string;
-  size: "small" | "medium" | "large";
+  size: "verySmall" | "small" | "medium" | "large";
 };
 
 const iconMap: Record<IconAvailable, string> = {
@@ -37,6 +37,7 @@ const iconMap: Record<IconAvailable, string> = {
 };
 
 const sizeMap: Record<IconProps["size"], string> = {
+  verySmall: "w-4 h-4",
   small: "w-6 h-6",
   medium: "w-8 h-8",
   large: "w-12 h-12",
