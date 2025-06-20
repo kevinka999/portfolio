@@ -153,7 +153,7 @@ export const DraggableWindow = ({
     <div
       ref={windowRef}
       className={twMerge(
-        "bg-win95-gray boxshadow-win95 absolute p-1 transition-none select-none",
+        "bg-win95-gray boxshadow-win95 absolute flex flex-col p-1 transition-none select-none",
         isDragging && "cursor-move",
       )}
       style={{
@@ -215,7 +215,7 @@ export const DraggableWindow = ({
         </div>
       </div>
 
-      <div className="bg-win95-gray flex-grow overflow-auto p-2">
+      <div className="bg-win95-gray h-full w-full flex-1 overflow-y-auto p-2">
         {children}
       </div>
     </div>

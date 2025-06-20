@@ -3,6 +3,15 @@ import { DesktopIcon, DraggableWindow, StartMenu, Taskbar } from "./components";
 import { Windows, WindowsEnum } from "./types";
 import { windowInfos } from "./const";
 import { getLastPositionOpened } from "./utils";
+import { About } from "./screens/About";
+
+const mapPageComponent: Record<WindowsEnum, React.ReactNode> = {
+  [WindowsEnum.ABOUT]: <About />,
+  [WindowsEnum.PROJECTS]: <></>,
+  [WindowsEnum.SKILLS]: <></>,
+  [WindowsEnum.EXPERIENCE]: <></>,
+  [WindowsEnum.CONTACT]: <></>,
+};
 
 const initialWindows: Windows = {
   [WindowsEnum.ABOUT]: {
@@ -157,7 +166,7 @@ export const App = () => {
               onMinimize={() => minimizeWindow(windowId as WindowsEnum)}
               initialPosition={windowState.initialPosition}
             >
-              page content
+              {mapPageComponent[id]}
             </DraggableWindow>
           );
         })}
