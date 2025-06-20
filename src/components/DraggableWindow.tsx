@@ -4,6 +4,7 @@ import { IconType } from "@/types";
 import { twMerge } from "tailwind-merge";
 import { MdClose, MdMinimize, MdOutlineSquare } from "react-icons/md";
 import { taskbarHeight } from "@/const";
+import { ResizeDirectionEnum, ResizeHandle } from "./ResizeHandle";
 
 type DraggableWindowProps = {
   children: React.ReactNode;
@@ -14,9 +15,10 @@ type DraggableWindowProps = {
   onFocus: () => void;
   onMinimize: () => void;
   initialPosition?: { x: number; y: number };
+  initialSize?: { width: number; height: number };
 };
 
-const initialSize = { width: 600, height: 400 };
+const minSize = { width: 200, height: 150 };
 
 export const DraggableWindow = ({
   children,
@@ -27,12 +29,24 @@ export const DraggableWindow = ({
   onFocus,
   onMinimize,
   initialPosition = { x: 100, y: 50 },
+  initialSize = { width: 600, height: 400 },
 }: DraggableWindowProps) => {
   const [position, setPosition] = React.useState(initialPosition);
   const [size, setSize] = React.useState(initialSize);
   const [isDragging, setIsDragging] = React.useState(false);
+  const [isResizing, setIsResizing] = React.useState(false);
+  const [resizeDirection, setResizeDirection] =
+    React.useState<ResizeDirectionEnum | null>(null);
   const [isMaximized, setIsMaximized] = React.useState(false);
   const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
+  const [resizeStart, setResizeStart] = React.useState({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    positionX: 0,
+    positionY: 0,
+  });
   const [prevState, setPrevState] = React.useState({
     position: initialPosition,
     size: initialSize,
@@ -78,6 +92,28 @@ export const DraggableWindow = ({
     }
   };
 
+  const handleResizeStart = (
+    e: React.MouseEvent,
+    direction: ResizeDirectionEnum,
+  ) => {
+    if (isMaximized) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    setResizeDirection(direction);
+    onFocus();
+
+    setResizeStart({
+      x: e.clientX,
+      y: e.clientY,
+      width: size.width,
+      height: size.height,
+      positionX: position.x,
+      positionY: position.y,
+    });
+  };
+
   const handleTitleBarDoubleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -100,25 +136,68 @@ export const DraggableWindow = ({
 
   React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging || isMaximized) return;
+      if (isDragging && !isMaximized) {
+        const newX = e.clientX - dragStart.x;
+        const newY = e.clientY - dragStart.y;
 
-      const newX = e.clientX - dragStart.x;
-      const newY = e.clientY - dragStart.y;
+        const maxX = window.innerWidth - size.width;
+        const maxY = window.innerHeight - size.height - taskbarHeight;
 
-      const maxX = window.innerWidth - size.width;
-      const maxY = window.innerHeight - size.height - taskbarHeight;
+        const boundedX = Math.max(0, Math.min(newX, maxX));
+        const boundedY = Math.max(0, Math.min(newY, maxY));
 
-      const boundedX = Math.max(0, Math.min(newX, maxX));
-      const boundedY = Math.max(0, Math.min(newY, maxY));
+        setPosition({ x: boundedX, y: boundedY });
+      }
 
-      setPosition({ x: boundedX, y: boundedY });
+      if (isResizing && !isMaximized && resizeDirection) {
+        const deltaX = e.clientX - resizeStart.x;
+        const deltaY = e.clientY - resizeStart.y;
+
+        let newWidth = resizeStart.width;
+        let newHeight = resizeStart.height;
+        let newX = resizeStart.positionX;
+        let newY = resizeStart.positionY;
+
+        if (resizeDirection.includes("e")) {
+          newWidth = Math.max(minSize.width, resizeStart.width + deltaX);
+        } else if (resizeDirection.includes("w")) {
+          const widthChange = Math.min(
+            deltaX,
+            resizeStart.width - minSize.width,
+          );
+          newWidth = resizeStart.width - widthChange;
+          newX = resizeStart.positionX + widthChange;
+        }
+
+        if (resizeDirection.includes("s")) {
+          newHeight = Math.max(minSize.height, resizeStart.height + deltaY);
+        } else if (resizeDirection.includes("n")) {
+          const heightChange = Math.min(
+            deltaY,
+            resizeStart.height - minSize.height,
+          );
+          newHeight = resizeStart.height - heightChange;
+          newY = resizeStart.positionY + heightChange;
+        }
+
+        const maxX = window.innerWidth - newWidth;
+        const maxY = window.innerHeight - newHeight - taskbarHeight;
+
+        newX = Math.max(0, Math.min(newX, maxX));
+        newY = Math.max(0, Math.min(newY, maxY));
+
+        setPosition({ x: newX, y: newY });
+        setSize({ width: newWidth, height: newHeight });
+      }
     };
 
     const handleMouseUp = () => {
       setIsDragging(false);
+      setIsResizing(false);
+      setResizeDirection(null);
     };
 
-    if (isDragging) {
+    if (isDragging || isResizing) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
     }
@@ -127,7 +206,16 @@ export const DraggableWindow = ({
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, dragStart, size, isMaximized]);
+  }, [
+    isDragging,
+    isResizing,
+    dragStart,
+    resizeStart,
+    resizeDirection,
+    size,
+    position,
+    isMaximized,
+  ]);
 
   const handleMinimizeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -165,6 +253,19 @@ export const DraggableWindow = ({
       }}
       onClick={handleWindowClick}
     >
+      {!isMaximized && (
+        <>
+          {Object.values(ResizeDirectionEnum).map(
+            (direction: ResizeDirectionEnum) => (
+              <ResizeHandle
+                direction={direction}
+                handleResizeStart={handleResizeStart}
+              />
+            ),
+          )}
+        </>
+      )}
+
       <div
         ref={titleBarRef}
         className={twMerge(

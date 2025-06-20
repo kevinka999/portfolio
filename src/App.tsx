@@ -19,26 +19,31 @@ const initialWindows: Windows = {
     isMinimized: false,
     zIndex: 1000,
     initialPosition: { x: 100, y: 50 },
+    initialSize: { width: 960, height: 540 },
   },
   [WindowsEnum.PROJECTS]: {
     isOpen: false,
     isMinimized: false,
     zIndex: 100,
+    initialSize: { width: 960, height: 540 },
   },
   [WindowsEnum.SKILLS]: {
     isOpen: false,
     isMinimized: false,
     zIndex: 100,
+    initialSize: { width: 960, height: 540 },
   },
   [WindowsEnum.EXPERIENCE]: {
     isOpen: false,
     isMinimized: false,
     zIndex: 100,
+    initialSize: { width: 960, height: 540 },
   },
   [WindowsEnum.CONTACT]: {
     isOpen: false,
     isMinimized: false,
     zIndex: 100,
+    initialSize: { width: 960, height: 540 },
   },
 };
 
@@ -165,6 +170,7 @@ export const App = () => {
               onFocus={() => bringToFront(windowId as WindowsEnum)}
               onMinimize={() => minimizeWindow(windowId as WindowsEnum)}
               initialPosition={windowState.initialPosition}
+              initialSize={windowState.initialSize}
             >
               {mapPageComponent[id]}
             </DraggableWindow>

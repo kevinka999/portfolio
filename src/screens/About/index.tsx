@@ -142,14 +142,17 @@ export const About = () => {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {badges.map((badge, index) => (
-            <div key={index} className="boxshadow-win95 bg-white p-3">
+            <div
+              key={index}
+              className="boxshadow-win95 flex items-center bg-white p-3"
+            >
               <div className="flex items-center gap-3">
                 <div className="text-win95-blue">{badge.icon}</div>
                 <div>
                   <h3 className="text-win95-blue text-sm font-bold">
                     {badge.title}
                   </h3>
-                  <p className="text-sm">{badge.value}</p>
+                  <p className="text-sm wrap-anywhere">{badge.value}</p>
                 </div>
               </div>
             </div>
