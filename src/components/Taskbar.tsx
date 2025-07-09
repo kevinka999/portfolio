@@ -43,7 +43,7 @@ export const Taskbar = ({
       <div className="flex-shrink-0">
         <button
           className={twMerge(
-            "boxshadow-win95 bg-win95-gray mx-1 flex h-8 items-center px-2",
+            "button bg-win95-gray mx-1 flex h-8 items-center px-2",
             isMenuOpen ? "active" : "",
           )}
           onClick={(e) => {
@@ -68,7 +68,7 @@ export const Taskbar = ({
             <button
               key={id}
               className={twMerge(
-                "boxshadow-win95 bg-win95-gray flex h-8 max-w-[200px] min-w-[120px] items-center px-2",
+                "button bg-win95-gray flex h-8 max-w-[200px] min-w-[120px] items-center px-2",
                 isActiveAndVisible ? "active" : "",
               )}
               onClick={() => handleTaskbarButtonClick(id)}

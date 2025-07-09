@@ -10,7 +10,7 @@ export const windowInfos: WindowsInfo = {
     title: "Skills",
   },
   [WindowsEnum.EXPERIENCE]: {
-    icon: "directory",
+    icon: "printer",
     title: "Experience",
   },
   [WindowsEnum.CONTACT]: {
@@ -18,7 +18,7 @@ export const windowInfos: WindowsInfo = {
     title: "Contact",
   },
   [WindowsEnum.PROJECTS]: {
-    icon: "printer",
+    icon: "directory",
     title: "Projects",
   },
 };

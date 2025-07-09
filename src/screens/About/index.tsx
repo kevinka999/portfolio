@@ -1,3 +1,4 @@
+import { Badge } from "@/components/Badge";
 import {
   FiMail,
   FiLinkedin,
@@ -64,33 +65,33 @@ export const About = () => {
 
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-col items-center">
-            <h1 className="text-win95-blue text-xl font-bold">Kevin Katzer</h1>
-            <h2 className="text-sm">Full Stack Developer</h2>
+            <h1 className="text-xl font-bold">Kevin Katzer</h1>
+            <h2 className="text-sm text-gray-800">Full Stack Developer</h2>
           </div>
 
           <div className="flex items-center gap-2">
             <div className="h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
-            <span className="text-sm">Available for work</span>
+            <span className="text-sm text-gray-800">Available for work</span>
           </div>
         </div>
 
         <div className="flex justify-center gap-3">
           <button
-            className={`boxshadow-win95 cursor-pointer p-2`}
+            className={`button cursor-pointer p-2`}
             aria-label="Email"
             onClick={handleEmailClick}
           >
             <FiMail size={18} />
           </button>
           <button
-            className={`boxshadow-win95 cursor-pointer p-2`}
+            className={`button cursor-pointer p-2`}
             aria-label="LinkedIn"
             onClick={handleLinkedInClick}
           >
             <FiLinkedin size={18} />
           </button>
           <button
-            className={`boxshadow-win95 cursor-pointer p-2`}
+            className={`button cursor-pointer p-2`}
             aria-label="GitHub"
             onClick={handleGithubClick}
           >
@@ -99,7 +100,7 @@ export const About = () => {
         </div>
 
         <button
-          className={`boxshadow-win95 flex cursor-pointer items-center gap-2 px-4 py-2`}
+          className={`button flex cursor-pointer items-center gap-2 px-4 py-2`}
           onClick={handleDownloadResume}
         >
           <FiDownload size={24} />
@@ -110,17 +111,17 @@ export const About = () => {
       <div className="flex flex-col gap-6">
         <div className="boxshadow-win95 flex flex-col gap-3 bg-white p-4">
           <div className="flex items-center gap-2">
-            <FiFileText size={20} className="text-win95-blue" />
-            <h3 className="text-win95-blue text-lg font-bold">About Me</h3>
+            <FiFileText size={24} />
+            <h3 className="text-lg font-bold">About Me</h3>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <p className="text-sm">
+          <div className="flex flex-col gap-2 text-sm text-gray-800">
+            <p>
               Welcome to my portfolio! I'm a passionate developer with expertise
               in building modern web applications that combine cutting-edge
               technology with intuitive user experiences.
             </p>
-            <p className="text-sm">
+            <p>
               With over 5 years of experience in software development, I
               specialize in creating responsive, user-friendly applications
               using the latest technologies and best practices. I love turning
@@ -129,13 +130,8 @@ export const About = () => {
           </div>
 
           <div className="flex gap-2">
-            {techStack.map((tech) => (
-              <span
-                key={tech}
-                className="bg-win95-gray boxshadow-win95 px-2 py-1 text-xs"
-              >
-                {tech}
-              </span>
+            {techStack.map((tech, index) => (
+              <Badge key={`${tech}-${index}`} text={tech} size="small" />
             ))}
           </div>
         </div>
@@ -147,12 +143,12 @@ export const About = () => {
               className="boxshadow-win95 flex items-center bg-white p-3"
             >
               <div className="flex items-center gap-3">
-                <div className="text-win95-blue">{badge.icon}</div>
+                {badge.icon}
                 <div>
-                  <h3 className="text-win95-blue text-sm font-bold">
-                    {badge.title}
-                  </h3>
-                  <p className="text-sm wrap-anywhere">{badge.value}</p>
+                  <h3 className="text-sm font-bold">{badge.title}</h3>
+                  <p className="text-sm wrap-anywhere text-gray-800">
+                    {badge.value}
+                  </p>
                 </div>
               </div>
             </div>
