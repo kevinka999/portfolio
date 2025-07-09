@@ -3,11 +3,11 @@ import { DesktopIcon, DraggableWindow, StartMenu, Taskbar } from "./components";
 import { Windows, WindowsEnum } from "./types";
 import { windowInfos } from "./const";
 import { getLastPositionOpened } from "./utils";
-import { About } from "./screens/About";
+import { About, Project } from "./screens";
 
 const mapPageComponent: Record<WindowsEnum, React.ReactNode> = {
   [WindowsEnum.ABOUT]: <About />,
-  [WindowsEnum.PROJECTS]: <></>,
+  [WindowsEnum.PROJECTS]: <Project />,
   [WindowsEnum.SKILLS]: <></>,
   [WindowsEnum.EXPERIENCE]: <></>,
   [WindowsEnum.CONTACT]: <></>,
@@ -15,17 +15,17 @@ const mapPageComponent: Record<WindowsEnum, React.ReactNode> = {
 
 const initialWindows: Windows = {
   [WindowsEnum.ABOUT]: {
-    isOpen: true,
+    isOpen: false,
     isMinimized: false,
     zIndex: 1000,
     initialPosition: { x: 100, y: 50 },
     initialSize: { width: 960, height: 540 },
   },
   [WindowsEnum.PROJECTS]: {
-    isOpen: false,
+    isOpen: true,
     isMinimized: false,
     zIndex: 100,
-    initialSize: { width: 960, height: 540 },
+    initialSize: { width: 1280, height: 720 },
   },
   [WindowsEnum.SKILLS]: {
     isOpen: false,
@@ -50,7 +50,7 @@ const initialWindows: Windows = {
 export const App = () => {
   const [windows, setWindows] = React.useState<Windows>(initialWindows);
   const [activeWindow, setActiveWindow] = React.useState<WindowsEnum | null>(
-    WindowsEnum.ABOUT,
+    WindowsEnum.PROJECTS,
   );
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
   const [nextZIndex, setNextZIndex] = React.useState(1001);
@@ -81,6 +81,7 @@ export const App = () => {
       const newWindow = {
         ...prev,
         [windowId]: {
+          ...window,
           isOpen: true,
           isMinimized: false,
           zIndex: nextZIndex,
@@ -90,10 +91,10 @@ export const App = () => {
           },
         },
       };
-      setActiveWindow(windowId);
-      setNextZIndex((prev) => prev + 1);
       return newWindow;
     });
+    setActiveWindow(windowId);
+    setNextZIndex((prev) => prev + 1);
   };
 
   const minimizeWindow = (windowId: WindowsEnum) => {

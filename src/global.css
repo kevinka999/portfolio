@@ -22,7 +22,8 @@ body {
   font-family: var(--font-display);
 }
 
-.boxshadow-win95 {
+.boxshadow-win95,
+.button {
   box-shadow:
     inset -1px -1px #0a0a0a,
     inset 1px 1px #fff,
@@ -30,7 +31,9 @@ body {
     inset 2px 2px #dfdfdf;
 }
 
-.boxshadow-win95.active {
+.boxshadow-win95.active,
+.button.active,
+.button:hover {
   box-shadow:
     inset -1px -1px #fff,
     inset 1px 1px #0a0a0a,

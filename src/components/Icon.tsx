@@ -12,7 +12,11 @@ type IconAvailable =
   | "printer"
   | "search-folder"
   | "network-globe"
-  | "plug-out";
+  | "plug-out"
+  | "video"
+  | "image"
+  | "world-click"
+  | "multiple-note";
 
 type IconProps = {
   icon: IconAvailable;
@@ -34,6 +38,10 @@ const iconMap: Record<IconAvailable, string> = {
   "search-folder": "/images/search-folder.png",
   "network-globe": "/images/network-globe.png",
   "plug-out": "/images/plug-out.png",
+  video: "/images/video.png",
+  image: "/images/image.png",
+  "world-click": "/images/world-click.png",
+  "multiple-note": "/images/multiple-note.png",
 };
 
 const sizeMap: Record<IconProps["size"], string> = {
