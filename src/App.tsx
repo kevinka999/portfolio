@@ -3,12 +3,12 @@ import { DesktopIcon, DraggableWindow, StartMenu, Taskbar } from "./components";
 import { Windows, WindowsEnum } from "./types";
 import { windowInfos } from "./const";
 import { getLastPositionOpened } from "./utils";
-import { About, Project } from "./screens";
+import { About, Project, Skills } from "./screens";
 
 const mapPageComponent: Record<WindowsEnum, React.ReactNode> = {
   [WindowsEnum.ABOUT]: <About />,
   [WindowsEnum.PROJECTS]: <Project />,
-  [WindowsEnum.SKILLS]: <></>,
+  [WindowsEnum.SKILLS]: <Skills />,
   [WindowsEnum.EXPERIENCE]: <></>,
   [WindowsEnum.CONTACT]: <></>,
 };
@@ -22,13 +22,13 @@ const initialWindows: Windows = {
     initialSize: { width: 960, height: 540 },
   },
   [WindowsEnum.PROJECTS]: {
-    isOpen: true,
+    isOpen: false,
     isMinimized: false,
     zIndex: 100,
     initialSize: { width: 1280, height: 720 },
   },
   [WindowsEnum.SKILLS]: {
-    isOpen: false,
+    isOpen: true,
     isMinimized: false,
     zIndex: 100,
     initialSize: { width: 960, height: 540 },

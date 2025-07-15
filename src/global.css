@@ -31,6 +31,10 @@ body {
     inset 2px 2px #dfdfdf;
 }
 
+.button.active {
+  background-color: #ffffffff;
+}
+
 .boxshadow-win95.active,
 .button.active,
 .button:hover {
@@ -39,4 +43,8 @@ body {
     inset 1px 1px #0a0a0a,
     inset -2px -2px #dfdfdf,
     inset 2px 2px grey;
+}
+
+.button:not(.active):hover {
+  background-color: #ffffff80;
 }
