@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { Windows, WindowsEnum } from "@/types";
 import { windowInfos } from "@/const";
 import { Icon } from "./Icon";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 interface TaskbarProps {
   windows: Windows;
@@ -83,7 +84,11 @@ export const Taskbar = ({
         })}
       </div>
 
-      <div className="border-win95-gray-dark flex h-full flex-shrink-0 items-center border-l px-2">
+      <div className="border-win95-gray-dark flex h-full items-center border-l">
+        <LanguageSwitcher />
+      </div>
+
+      <div className="border-win95-gray-dark flex h-full flex-shrink-0 items-center border-l">
         <div className="bg-win95-gray flex items-center justify-center px-2 text-xs">
           <BiTime size={14} className="mr-1" />
           <span className="mt-1 select-none">{formatTime(time)}</span>

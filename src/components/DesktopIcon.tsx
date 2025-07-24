@@ -16,7 +16,7 @@ export const DesktopIcon = ({ icon, label, onClick }: DesktopIconProps) => {
   return (
     <div
       className={
-        "hover:bg-win95-blue flex w-20 cursor-pointer flex-col items-center p-1 hover:text-white"
+        "hover:bg-win95-blue flex w-20 flex-col items-center p-1 hover:text-white"
       }
       onClick={handleClick}
     >

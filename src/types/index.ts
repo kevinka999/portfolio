@@ -1,4 +1,5 @@
 import { Icon } from "@/components/Icon";
+import { languages } from "@/const";
 
 export type IconType = React.ComponentProps<typeof Icon>["icon"];
 
@@ -25,3 +26,5 @@ export enum WindowsEnum {
 
 export type Windows = Record<WindowsEnum, WindowState>;
 export type WindowsInfo = Record<WindowsEnum, WindowInfo>;
+
+export type LanguageAvailables = keyof typeof languages;
