@@ -1,17 +1,16 @@
-import { BiTime } from "react-icons/bi";
+import { WindowState } from "@/types";
 import React from "react";
+import { BiTime } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
-import { Windows, WindowsEnum } from "@/types";
-import { windowInfos } from "@/const";
 import { Icon } from "./Icon";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 interface TaskbarProps {
-  windows: Windows;
+  windows: Record<string, WindowState>;
   isMenuOpen: boolean;
-  activeWindow: WindowsEnum | null;
+  activeWindow: string | null;
   onClickMenu: () => void;
-  onWindowClick: (windowId: WindowsEnum) => void;
+  onWindowClick: (windowId: string) => void;
 }
 
 export const Taskbar = ({
@@ -35,7 +34,7 @@ export const Taskbar = ({
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
-  const handleTaskbarButtonClick = (windowId: WindowsEnum) => {
+  const handleTaskbarButtonClick = (windowId: string) => {
     onWindowClick(windowId);
   };
 
@@ -61,24 +60,23 @@ export const Taskbar = ({
         {Object.entries(windows).map(([windowId, windowState]) => {
           if (!windowState.isOpen) return null;
 
-          const id: WindowsEnum = windowId as WindowsEnum;
           const isActiveAndVisible =
-            activeWindow === id && !windowState.isMinimized;
+            activeWindow === windowId && !windowState.isMinimized;
 
           return (
             <button
-              key={id}
+              key={windowId}
               className={twMerge(
                 "button bg-win95-gray flex h-8 max-w-[200px] min-w-[120px] items-center px-2",
                 isActiveAndVisible ? "active" : "",
               )}
-              onClick={() => handleTaskbarButtonClick(id)}
-              title={windowInfos[id].title}
+              onClick={() => handleTaskbarButtonClick(windowId)}
+              title={windowState.title}
             >
               <div className="mr-2">
-                <Icon icon={windowInfos[id].icon} size="small" />
+                <Icon icon={windowState.icon} size="small" />
               </div>
-              <span className="truncate text-sm">{windowInfos[id].title}</span>
+              <span className="truncate text-sm">{windowState.title}</span>
             </button>
           );
         })}

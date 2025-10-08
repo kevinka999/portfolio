@@ -1,14 +1,14 @@
-import { WindowsEnum } from "@/types";
-import { windowInfos } from "@/const";
+import { windowMetadataMap } from "@/const/windows";
+import { AppsEnum } from "@/types";
 import { Icon } from "./Icon";
 
 type StartMenuProps = {
-  windowsToShow: WindowsEnum[];
-  onItemClick: (itemId: WindowsEnum) => void;
+  apps: AppsEnum[];
+  onItemClick: (itemId: string) => void;
 };
 
-export const StartMenu = ({ windowsToShow, onItemClick }: StartMenuProps) => {
-  const handleMenuItemClick = (itemId: WindowsEnum) => {
+export const StartMenu = ({ apps, onItemClick }: StartMenuProps) => {
+  const handleMenuItemClick = (itemId: string) => {
     onItemClick(itemId);
   };
 
@@ -25,18 +25,22 @@ export const StartMenu = ({ windowsToShow, onItemClick }: StartMenuProps) => {
       </div>
 
       <div className="border-win95-gray border-l-8 py-2">
-        {windowsToShow.map((itemId) => (
-          <button
-            key={itemId}
-            className="hover:bg-win95-blue flex w-full items-center px-4 py-1 hover:text-white"
-            onClick={() => handleMenuItemClick(itemId as WindowsEnum)}
-          >
-            <span className="mr-3 text-lg">
-              <Icon icon={windowInfos[itemId].icon} size="medium" />
-            </span>
-            <span className="text-sm">{windowInfos[itemId].title}</span>
-          </button>
-        ))}
+        {apps.map((app) => {
+          const appMetadata = windowMetadataMap[app];
+
+          return (
+            <button
+              key={appMetadata.id}
+              className="hover:bg-win95-blue flex w-full items-center px-4 py-1 hover:text-white"
+              onClick={() => handleMenuItemClick(appMetadata.id)}
+            >
+              <span className="mr-3 text-lg">
+                <Icon icon={appMetadata.icon} size="medium" />
+              </span>
+              <span className="text-sm">{appMetadata.title}</span>
+            </button>
+          );
+        })}
 
         <div className="my-1 border-t border-gray-400"></div>
 

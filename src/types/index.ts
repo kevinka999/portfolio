@@ -3,20 +3,7 @@ import { languages } from "@/const";
 
 export type IconType = React.ComponentProps<typeof Icon>["icon"];
 
-export type WindowState = {
-  isOpen: boolean;
-  isMinimized: boolean;
-  zIndex: number;
-  initialSize?: { width: number; height: number };
-  initialPosition?: { x: number; y: number };
-};
-
-export type WindowInfo = {
-  icon: IconType;
-  title: string;
-};
-
-export enum WindowsEnum {
+export enum AppsEnum {
   ABOUT = "about",
   PROJECTS = "projects",
   SKILLS = "skills",
@@ -24,7 +11,6 @@ export enum WindowsEnum {
   CONTACT = "contact",
 }
 
-export type Windows = Record<WindowsEnum, WindowState>;
-export type WindowsInfo = Record<WindowsEnum, WindowInfo>;
-
 export type LanguageAvailables = keyof typeof languages;
+
+export * from "./windows";
