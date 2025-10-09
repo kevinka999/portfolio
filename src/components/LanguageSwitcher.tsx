@@ -1,8 +1,8 @@
-import React from "react";
-import { twMerge } from "tailwind-merge";
+import { AVAILABLE_LANGUAGES } from "@/const";
 import { useGlobal } from "@/contexts";
 import { LanguageAvailables } from "@/types";
-import { languages } from "@/const";
+import React from "react";
+import { twMerge } from "tailwind-merge";
 
 export const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -48,7 +48,7 @@ export const LanguageSwitcher = () => {
 
       {isOpen && (
         <div className="boxshadow-win95 bg-win95-gray absolute right-0 bottom-full mb-1 flex w-max min-w-[120px] flex-col gap-1 p-1">
-          {Object.entries(languages).map(([key, value]) => (
+          {Object.entries(AVAILABLE_LANGUAGES).map(([key, value]) => (
             <button
               key={key}
               className={twMerge(

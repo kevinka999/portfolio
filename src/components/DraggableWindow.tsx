@@ -1,9 +1,9 @@
-import React from "react";
-import { Icon } from "./Icon";
+import { TASKBAR_HEIGHT } from "@/const";
 import { IconType } from "@/types";
-import { twMerge } from "tailwind-merge";
+import React from "react";
 import { MdClose, MdMinimize, MdOutlineSquare } from "react-icons/md";
-import { taskbarHeight } from "@/const";
+import { twMerge } from "tailwind-merge";
+import { Icon } from "./Icon";
 import { ResizeDirectionEnum, ResizeHandle } from "./ResizeHandle";
 
 type DraggableWindowProps = {
@@ -63,7 +63,7 @@ export const DraggableWindow = ({
     const updateDesktopSize = () => {
       setDesktopSize({
         width: window.innerWidth,
-        height: window.innerHeight - taskbarHeight,
+        height: window.innerHeight - TASKBAR_HEIGHT,
       });
     };
 
@@ -141,7 +141,7 @@ export const DraggableWindow = ({
         const newY = e.clientY - dragStart.y;
 
         const maxX = window.innerWidth - size.width;
-        const maxY = window.innerHeight - size.height - taskbarHeight;
+        const maxY = window.innerHeight - size.height - TASKBAR_HEIGHT;
 
         const boundedX = Math.max(0, Math.min(newX, maxX));
         const boundedY = Math.max(0, Math.min(newY, maxY));
@@ -181,7 +181,7 @@ export const DraggableWindow = ({
         }
 
         const maxX = window.innerWidth - newWidth;
-        const maxY = window.innerHeight - newHeight - taskbarHeight;
+        const maxY = window.innerHeight - newHeight - TASKBAR_HEIGHT;
 
         newX = Math.max(0, Math.min(newX, maxX));
         newY = Math.max(0, Math.min(newY, maxY));

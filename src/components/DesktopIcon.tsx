@@ -20,10 +20,10 @@ export const DesktopIcon = ({ icon, label, onClick }: DesktopIconProps) => {
       }
       onClick={handleClick}
     >
-      <div className="p-1">
+      <div className="p-1 select-none">
         <Icon icon={icon} size="medium" />
       </div>
-      <div className="mt-1 px-1 text-center text-xs">{label}</div>
+      <div className="mt-1 px-1 text-center text-xs select-none">{label}</div>
     </div>
   );
 };
