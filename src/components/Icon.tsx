@@ -19,6 +19,9 @@ type IconAvailable =
   | "multiple-note"
   | "msn"
   | "users"
+  | "green-user"
+  | "red-user"
+  | "black-user"
   | "computer-connected"
   | "computer-disconnected";
 
@@ -48,6 +51,9 @@ const iconMap: Record<IconAvailable, string> = {
   "multiple-note": "/images/multiple-note.png",
   msn: "/images/msn.png",
   users: "/images/users.svg",
+  "green-user": "/images/green-user.svg",
+  "red-user": "/images/red-user.svg",
+  "black-user": "/images/black-user.svg",
   "computer-connected": "/images/conn_pcs_on_on.png",
   "computer-disconnected": "/images/conn_pcs_no_network.png",
 };

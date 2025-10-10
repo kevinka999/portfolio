@@ -1,7 +1,6 @@
 import { Icon } from "@/components";
 import { useMSN, useWindows } from "@/hooks";
-import { IconType, User } from "@/types";
-import { TiUser } from "react-icons/ti";
+import { IconType, User, UserStatus } from "@/types";
 import { Chat } from "../../components/Chat";
 
 const headerButtons: { id: string; label: string; icon: IconType }[] = [
@@ -13,11 +12,13 @@ export const MSN = () => {
   const { users, currentUser, createChat } = useMSN();
   const { openWindow } = useWindows();
 
-  const onlineUsers = users.filter((user) => user.status === "online");
-  const offlineUsers = users.filter((user) => user.status === "offline");
+  const onlineUsers = users.filter((user) => user.status === UserStatus.ONLINE);
+  const offlineUsers = users.filter(
+    (user) => user.status === UserStatus.OFFLINE,
+  );
 
   const handleUserClick = (user: User) => {
-    if (user.status === "online") {
+    if (user.status === UserStatus.ONLINE) {
       const chatId = createChat(user.id);
       const windowId = chatId;
 
@@ -56,10 +57,10 @@ export const MSN = () => {
             {onlineUsers.map((user) => (
               <li
                 key={user.id}
-                className="hover:bg-win95-blue flex cursor-pointer items-center gap-0.5 hover:text-white"
+                className="hover:bg-win95-blue flex cursor-pointer items-center gap-1 hover:text-white"
                 onClick={() => handleUserClick(user)}
               >
-                <TiUser className="text-green-500" />
+                <Icon icon="green-user" size="verySmall" />
                 {user.name}
               </li>
             ))}
@@ -74,8 +75,11 @@ export const MSN = () => {
 
           <ul>
             {offlineUsers.map((user) => (
-              <li key={user.id} className="flex items-center gap-0.5">
-                <TiUser className="text-red-600" />
+              <li
+                key={user.id}
+                className="flex items-center gap-1 text-gray-800"
+              >
+                <Icon icon="red-user" size="verySmall" />
                 {user.name}
               </li>
             ))}
@@ -89,7 +93,7 @@ export const MSN = () => {
       </div>
 
       <div className="boxshadow-win95-inset flex items-center px-1.5 py-1 text-sm">
-        <TiUser className="text-green-500" />
+        <Icon icon="green-user" size="verySmall" />
         {currentUser.name} (online)
       </div>
     </div>
