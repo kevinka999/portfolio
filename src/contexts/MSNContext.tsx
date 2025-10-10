@@ -15,9 +15,14 @@ type MSNContextType = {
   chats: Record<string, Chat>;
   currentUser: User;
   createChat: (participantId: string) => string;
-  sendMessage: (chatId: string, content: string) => void;
+  sendMessage: (
+    chatId: string,
+    senderId: string,
+    content: string,
+  ) => Promise<void>;
   getChatByParticipant: (participantId: string) => Chat | undefined;
   getUsername: (userId: string) => string;
+  setTypingStatus: (userId: string, chatId: string, isTyping: boolean) => void;
 };
 
 export const MSNContext = React.createContext<MSNContextType | undefined>(
@@ -41,30 +46,41 @@ export const MSNProvider = ({ children }: { children: React.ReactNode }) => {
       id: nanoid(),
       participants: [currentUser.id, participantId],
       messages: [],
+      typing: {},
     };
 
     setChats((prev) => ({ ...prev, [newChat.id]: newChat }));
     return newChat.id;
   };
 
-  const sendMessage = (chatId: string, content: string) => {
+  const sendMessage = async (
+    chatId: string,
+    senderId: string,
+    content: string,
+  ) => {
     const chat = chats[chatId];
     if (!chat) return;
 
     const newMessage: Message = {
       id: nanoid(),
-      senderId: currentUser.id,
+      senderId,
       content,
       timestamp: Date.now(),
     };
 
-    setChats((prev) => ({
-      ...prev,
-      [chatId]: {
-        ...prev[chatId],
-        messages: [...prev[chatId].messages, newMessage],
-      },
-    }));
+    setChats((prev) => {
+      return {
+        ...prev,
+        [chatId]: {
+          ...prev[chatId],
+          typing: {
+            ...prev[chatId].typing,
+            [senderId]: false,
+          },
+          messages: [...prev[chatId].messages, newMessage],
+        },
+      };
+    });
   };
 
   const getChatByParticipant = (participantId: string) =>
@@ -82,6 +98,28 @@ export const MSNProvider = ({ children }: { children: React.ReactNode }) => {
     return user.name;
   };
 
+  const setTypingStatus = (
+    userId: string,
+    chatId: string,
+    isTyping: boolean,
+  ) => {
+    setChats((prev) => {
+      const chat = prev[chatId];
+      if (!chat) return prev;
+
+      return {
+        ...prev,
+        [chatId]: {
+          ...chat,
+          typing: {
+            ...chat.typing,
+            [userId]: isTyping,
+          },
+        },
+      };
+    });
+  };
+
   return (
     <MSNContext.Provider
       value={{
@@ -92,6 +130,7 @@ export const MSNProvider = ({ children }: { children: React.ReactNode }) => {
         sendMessage,
         getChatByParticipant,
         getUsername,
+        setTypingStatus,
       }}
     >
       {children}

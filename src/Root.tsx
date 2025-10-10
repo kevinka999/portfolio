@@ -1,4 +1,5 @@
 import { App } from "./App.tsx";
+import { AIIntegration } from "./components/AIIntegration.tsx";
 import { GlobalContextProvider } from "./contexts/GlobalContext.tsx";
 import { MSNProvider } from "./contexts/MSNContext.tsx";
 import { WindowsProvider } from "./contexts/WindowsContext.tsx";
@@ -10,6 +11,8 @@ export const RootComponent = () => {
     <GlobalContextProvider>
       <WindowsProvider>
         <MSNProvider>
+          <AIIntegration />
+
           <App />
         </MSNProvider>
       </WindowsProvider>

@@ -1,5 +1,5 @@
 import { AVAILABLE_LANGUAGES } from "@/const";
-import { useGlobal } from "@/contexts";
+import { useGlobal } from "@/hooks";
 import { LanguageAvailables } from "@/types";
 import React from "react";
 import { twMerge } from "tailwind-merge";

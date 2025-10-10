@@ -1,6 +1,6 @@
-import React from "react";
 import { useLocalStorage } from "@/hooks";
 import { LanguageAvailables } from "@/types";
+import React from "react";
 
 interface GlobalContextType {
   currentLanguage: LanguageAvailables;
@@ -28,12 +28,4 @@ export const GlobalContextProvider = ({ children }: GlobalContextProps) => {
       {children}
     </globalContext.Provider>
   );
-};
-
-export const useGlobal = () => {
-  const context = React.useContext(globalContext);
-  if (!context)
-    throw new Error("useGlobal must be used within a GlobalContextProvider");
-
-  return context;
 };

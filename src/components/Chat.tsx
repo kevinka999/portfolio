@@ -8,14 +8,14 @@ type ChatProps = {
 
 export const Chat = ({ chatId }: ChatProps) => {
   const [newMessage, setNewMessage] = React.useState<string>("");
-  const { users, chats, sendMessage, getUsername } = useMSN();
+  const { users, chats, sendMessage, getUsername, currentUser } = useMSN();
 
   const chat = chats[chatId];
   if (!chat) return null;
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      sendMessage(chat.id, newMessage.trim());
+      sendMessage(chat.id, currentUser.id, newMessage.trim());
       setNewMessage("");
     }
   };
@@ -31,6 +31,7 @@ export const Chat = ({ chatId }: ChatProps) => {
   const participantUser = users.find(
     (user) => user.id === chat.participants[1],
   );
+  const isParticipantTyping = chat.typing[participantUser?.id || ""];
 
   return (
     <div className="flex h-full flex-col gap-2">
@@ -52,6 +53,12 @@ export const Chat = ({ chatId }: ChatProps) => {
             </div>
           );
         })}
+
+        {isParticipantTyping && (
+          <div className="text-sm text-gray-600 italic">
+            {participantUser?.name} is typing...
+          </div>
+        )}
       </div>
 
       <div className="flex w-full gap-2">

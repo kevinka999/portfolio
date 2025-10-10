@@ -53,7 +53,7 @@ export const MSN = () => {
             <h3 className="font-bold">Contacts currently online</h3>
           </div>
 
-          <ul>
+          <ul className="flex flex-col gap-1 pl-1">
             {onlineUsers.map((user) => (
               <li
                 key={user.id}
@@ -73,7 +73,7 @@ export const MSN = () => {
             <h3 className="font-bold">Contacts not online</h3>
           </div>
 
-          <ul>
+          <ul className="flex flex-col gap-1 pl-1">
             {offlineUsers.map((user) => (
               <li
                 key={user.id}

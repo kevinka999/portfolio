@@ -1,6 +1,6 @@
 export enum UserStatus {
-  ONLINE = "online",
-  OFFLINE = "offline",
+  ONLINE = "ONLINE",
+  OFFLINE = "OFFLINE",
 }
 
 export type User = {
@@ -19,6 +19,7 @@ export type Message = {
 
 export type Chat = {
   id: string;
-  participants: [string, string];
+  participants: string[];
   messages: Message[];
+  typing: Record<string, boolean>;
 };
