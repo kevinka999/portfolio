@@ -16,7 +16,11 @@ type IconAvailable =
   | "video"
   | "image"
   | "world-click"
-  | "multiple-note";
+  | "multiple-note"
+  | "msn"
+  | "users"
+  | "computer-connected"
+  | "computer-disconnected";
 
 type IconProps = {
   icon: IconAvailable;
@@ -42,6 +46,10 @@ const iconMap: Record<IconAvailable, string> = {
   image: "/images/image.png",
   "world-click": "/images/world-click.png",
   "multiple-note": "/images/multiple-note.png",
+  msn: "/images/msn.png",
+  users: "/images/users.svg",
+  "computer-connected": "/images/conn_pcs_on_on.png",
+  "computer-disconnected": "/images/conn_pcs_no_network.png",
 };
 
 const sizeMap: Record<IconProps["size"], string> = {

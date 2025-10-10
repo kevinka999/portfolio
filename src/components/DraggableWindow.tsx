@@ -3,6 +3,7 @@ import { IconType } from "@/types";
 import React from "react";
 import { MdClose, MdMinimize, MdOutlineSquare } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
+import { Divider } from "./Divider";
 import { Icon } from "./Icon";
 import { ResizeDirectionEnum, ResizeHandle } from "./ResizeHandle";
 
@@ -282,7 +283,7 @@ export const DraggableWindow = ({
           <span className="text-sm font-normal">{title}</span>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <button
             className="boxshadow-win95 bg-win95-gray flex h-[16px] w-[18px] cursor-pointer items-center justify-center p-0.5 text-black"
             onClick={handleMinimizeClick}
@@ -307,7 +308,7 @@ export const DraggableWindow = ({
         </div>
       </div>
 
-      <div className="bg-win95-gray border-win95-gray-dark border-b px-2 py-1 text-xs">
+      <div className="px-2 py-1 text-xs">
         <div className="flex space-x-4">
           <span className="cursor-pointer hover:underline">File</span>
           <span className="cursor-pointer hover:underline">Edit</span>
@@ -315,6 +316,8 @@ export const DraggableWindow = ({
           <span className="cursor-pointer hover:underline">Help</span>
         </div>
       </div>
+
+      <Divider />
 
       <div className="bg-win95-gray h-full w-full flex-1 overflow-y-auto p-2">
         {children}

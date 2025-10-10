@@ -1,5 +1,6 @@
 import { windowMetadataMap } from "@/const/windows";
 import { AppsEnum } from "@/types";
+import { Divider } from "./Divider";
 import { Icon } from "./Icon";
 
 type StartMenuProps = {
@@ -41,8 +42,9 @@ export const StartMenu = ({ apps, onItemClick }: StartMenuProps) => {
             </button>
           );
         })}
-
-        <div className="my-1 border-t border-gray-400"></div>
+        <div className="w-full pr-1">
+          <Divider />
+        </div>
 
         <div className="hover:bg-win95-blue flex items-center px-4 py-1 hover:text-white">
           <span className="mr-3 text-lg text-red-600">

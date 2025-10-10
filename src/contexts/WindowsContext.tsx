@@ -33,6 +33,7 @@ export const WindowsProvider: React.FC<{ children: React.ReactNode }> = ({
       }
 
       const lastPositionOpened = getLastPositionOpened(prev);
+
       return {
         ...prev,
         [windowId]: {

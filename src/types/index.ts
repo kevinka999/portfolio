@@ -14,4 +14,5 @@ export enum AppsEnum {
 
 export type LanguageAvailables = keyof typeof AVAILABLE_LANGUAGES;
 
+export * from "./msn";
 export * from "./windows";

@@ -22,6 +22,14 @@ body {
   font-family: var(--font-display);
 }
 
+.boxshadow-win95-inset {
+  box-shadow:
+    inset 1px 1px #0a0a0a,
+    inset -1px -1px #fff,
+    inset 2px 2px grey,
+    inset -2px -2px #dfdfdf;
+}
+
 .boxshadow-win95,
 .button {
   box-shadow:
@@ -47,4 +55,58 @@ body {
 
 .button:not(.active):hover {
   background-color: #ffffff80;
+}
+
+* {
+  scrollbar-width: auto;
+  scrollbar-color: var(--color-win95-gray) var(--color-win95-gray-dark);
+}
+
+*::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-win95-gray);
+  box-shadow:
+    inset 1px 1px #0a0a0a,
+    inset -1px -1px #fff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-win95-gray);
+  border: none;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #fff,
+    inset -2px -2px grey,
+    inset 2px 2px #dfdfdf;
+}
+
+*::-webkit-scrollbar-button:single-button {
+  background: var(--color-win95-gray);
+  display: block;
+  width: 16px;
+  height: 16px;
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #fff,
+    inset -2px -2px grey,
+    inset 2px 2px #dfdfdf;
+}
+
+*::-webkit-scrollbar-button:single-button:active {
+  box-shadow:
+    inset -1px -1px #fff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px grey;
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--color-win95-gray);
+  box-shadow:
+    inset 1px 1px #0a0a0a,
+    inset -1px -1px #fff;
 }
