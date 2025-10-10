@@ -1,4 +1,5 @@
 import { useMSN } from "@/hooks";
+import dayjs from "dayjs";
 import React from "react";
 
 type ChatProps = {
@@ -7,7 +8,7 @@ type ChatProps = {
 
 export const Chat = ({ chatId }: ChatProps) => {
   const [newMessage, setNewMessage] = React.useState<string>("");
-  const { chats, sendMessage, getUsername } = useMSN();
+  const { users, chats, sendMessage, getUsername } = useMSN();
 
   const chat = chats[chatId];
   if (!chat) return null;
@@ -26,15 +27,27 @@ export const Chat = ({ chatId }: ChatProps) => {
     }
   };
 
+  const lastMessage = chat.messages[chat.messages.length - 1] || null;
+  const participantUser = users.find(
+    (user) => user.id === chat.participants[1],
+  );
+
   return (
     <div className="flex h-full flex-col gap-2">
+      <div className="text-sm">
+        To: {participantUser?.name}
+        {" <"}
+        {participantUser?.email}
+        {">"}
+      </div>
+
       <div className="boxshadow-win95-inset flex flex-1 flex-col gap-2 overflow-y-auto bg-white p-2">
         {chat.messages.map((message, index) => {
           const username = getUsername(message.senderId);
 
           return (
             <div key={`${message.id}-${index}`} className="text-left">
-              <div className="text-xs">{username} says:</div>
+              <div className="text-sm">{username} says:</div>
               <div className="text-lg">{message.content}</div>
             </div>
           );
@@ -55,6 +68,18 @@ export const Chat = ({ chatId }: ChatProps) => {
           <span className="underline">S</span>
           end
         </button>
+      </div>
+
+      <div className="boxshadow-win95-inset flex items-center px-1.5 py-1 text-sm">
+        {lastMessage ? (
+          <>
+            Last message received on{" "}
+            {dayjs(lastMessage.timestamp).format("M/D/YY")} at{" "}
+            {dayjs(lastMessage.timestamp).format("h:mma")}
+          </>
+        ) : (
+          <>No messages yet</>
+        )}
       </div>
     </div>
   );

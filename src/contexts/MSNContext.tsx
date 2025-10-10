@@ -6,6 +6,7 @@ import React from "react";
 const currentUser: User = {
   id: "8ZqkVv2o9uL0xJ7cP1RsT",
   name: "You",
+  email: "you@example.com",
   status: UserStatus.ONLINE,
 };
 

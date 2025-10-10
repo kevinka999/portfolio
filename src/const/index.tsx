@@ -11,11 +11,13 @@ export const MOCK_USERS: User[] = [
   {
     id: "1",
     name: "Kevin Katzer",
+    email: "kevinka999@gmail.com",
     status: UserStatus.ONLINE,
   },
   {
     id: "2",
     name: "John Doe",
+    email: "john.doe@example.com",
     status: UserStatus.OFFLINE,
   },
 ];
