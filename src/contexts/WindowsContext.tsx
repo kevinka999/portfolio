@@ -25,14 +25,10 @@ export const WindowsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const openWindow = (windowId: string, state: WindowInfo) => {
     setWindows((prev) => {
-      const window = prev[windowId];
-
-      if (window?.isOpen) {
-        bringToFront(windowId);
-        return prev;
-      }
-
       const lastPositionOpened = getLastPositionOpened(prev);
+
+      bringToFront(windowId);
+      if (prev[windowId]) return prev;
 
       return {
         ...prev,
@@ -48,9 +44,6 @@ export const WindowsProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       };
     });
-
-    setActiveWindow(windowId);
-    setNextZIndex((prev) => prev + 1);
   };
 
   const bringToFront = (windowId: string) => {

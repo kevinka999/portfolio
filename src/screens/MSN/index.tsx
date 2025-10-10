@@ -26,7 +26,7 @@ export const MSN = () => {
         icon: "msn",
         title: `Chat with ${user.name}`,
         content: <Chat chatId={windowId} />,
-        initialSize: { width: 400, height: 500 },
+        initialSize: { width: 600, height: 500 },
       });
     }
   };
