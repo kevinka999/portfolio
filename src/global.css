@@ -53,8 +53,17 @@ body {
     inset 2px 2px grey;
 }
 
-.button:not(.active):hover {
+.button:not(.active):not(:disabled):hover {
   background-color: #ffffff80;
+}
+
+.button:disabled {
+  background-color: var(--color-win95-gray);
+  box-shadow:
+    inset -1px -1px #dfdfdf,
+    inset 1px 1px grey,
+    inset -2px -2px #fff,
+    inset 2px 2px #0a0a0a;
 }
 
 * {

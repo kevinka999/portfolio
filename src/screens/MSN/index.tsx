@@ -1,11 +1,17 @@
 import { Icon } from "@/components";
 import { useMSN, useWindows } from "@/hooks";
 import { IconType, User, UserStatus } from "@/types";
+import { twMerge } from "tailwind-merge";
 import { Chat } from "../../components/Chat";
 
-const headerButtons: { id: string; label: string; icon: IconType }[] = [
-  { id: "add", label: "Add", icon: "users" },
-  { id: "call", label: "Call", icon: "phone" },
+const headerButtons: {
+  id: string;
+  label: string;
+  icon: IconType;
+  disabled?: boolean;
+}[] = [
+  { id: "add", label: "Add", icon: "users", disabled: true },
+  { id: "call", label: "Call", icon: "phone", disabled: true },
 ];
 
 export const MSN = () => {
@@ -38,9 +44,17 @@ export const MSN = () => {
         {headerButtons.map((button) => (
           <button
             key={button.id}
-            className="button flex w-15 flex-col items-center gap-1 border-1 border-black p-2 text-sm"
+            disabled={button.disabled}
+            className={twMerge(
+              "button flex w-15 flex-col items-center gap-1 border-1 border-black p-2 text-sm",
+              button.disabled && "cursor-not-allowed border-none opacity-50",
+            )}
           >
-            <Icon icon={button.icon} size="medium" />
+            <Icon
+              icon={button.icon}
+              size="medium"
+              className={button.disabled ? "opacity-50" : ""}
+            />
             {button.label}
           </button>
         ))}
