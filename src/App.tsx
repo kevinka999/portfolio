@@ -95,6 +95,13 @@ export const App = () => {
         onWindowClick={handleTaskbarClick}
         isMenuOpen={isMenuOpen}
         onClickMenu={toggleStartMenu}
+        onOpenWindow={(windowId) => {
+          const appInfo = windowInfosMap.find(
+            (window) => window.id === windowId,
+          );
+          if (!appInfo) return;
+          openWindow(windowId, appInfo);
+        }}
       />
 
       {isMenuOpen && (

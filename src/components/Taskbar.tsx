@@ -1,9 +1,19 @@
-import { WindowState } from "@/types";
+import { windowMetadataMap } from "@/const/windows";
+import { useDoubleClick } from "@/hooks";
+import { AppsEnum, IconType, WindowState } from "@/types";
 import React from "react";
 import { BiTime } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import { Icon } from "./Icon";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+
+const TASKBAR_ICONS: { id: string; icon: IconType; title: string }[] = [
+  {
+    id: windowMetadataMap[AppsEnum.MSN].id,
+    title: windowMetadataMap[AppsEnum.MSN].title,
+    icon: "green-user",
+  },
+];
 
 interface TaskbarProps {
   windows: Record<string, WindowState>;
@@ -11,6 +21,7 @@ interface TaskbarProps {
   activeWindow: string | null;
   onClickMenu: () => void;
   onWindowClick: (windowId: string) => void;
+  onOpenWindow: (windowId: string) => void;
 }
 
 export const Taskbar = ({
@@ -19,8 +30,14 @@ export const Taskbar = ({
   onClickMenu,
   activeWindow,
   onWindowClick,
+  onOpenWindow,
 }: TaskbarProps) => {
   const [time, setTime] = React.useState<Date>(new Date());
+
+  const { onClick: handleIconClick } = useDoubleClick({
+    onDoubleClick: onOpenWindow,
+    delay: 500,
+  });
 
   React.useEffect(() => {
     const timer = setInterval(() => {
@@ -84,6 +101,18 @@ export const Taskbar = ({
 
       <div className="border-win95-gray-dark flex h-full items-center border-l">
         <LanguageSwitcher />
+      </div>
+
+      <div className="border-win95-gray-dark flex h-full items-center border-l px-2">
+        {TASKBAR_ICONS.map((icon) => (
+          <button
+            key={icon.id}
+            onClick={() => handleIconClick(icon.id)}
+            title={icon.title}
+          >
+            <Icon icon={icon.icon} size="verySmall" />
+          </button>
+        ))}
       </div>
 
       <div className="border-win95-gray-dark flex h-full flex-shrink-0 items-center border-l">
