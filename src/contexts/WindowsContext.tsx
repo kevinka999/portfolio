@@ -26,14 +26,17 @@ export const WindowsProvider: React.FC<{ children: React.ReactNode }> = ({
   const openWindow = (windowId: string, state: WindowInfo) => {
     setWindows((prev) => {
       const lastPositionOpened = getLastPositionOpened(prev);
+      const existingWindow = prev[windowId];
 
-      bringToFront(windowId);
-      if (prev[windowId]) return prev;
+      if (existingWindow?.isOpen) {
+        bringToFront(windowId);
+        return prev;
+      }
 
       return {
         ...prev,
         [windowId]: {
-          ...state,
+          ...(existingWindow || state),
           isOpen: true,
           isMinimized: false,
           zIndex: nextZIndex,
