@@ -1,3 +1,4 @@
+import { TASKBAR_HEIGHT } from "@/const";
 import { windowMetadataMap } from "@/const/windows";
 import { useDoubleClick } from "@/hooks";
 import { AppsEnum, IconType, WindowState } from "@/types";
@@ -7,7 +8,7 @@ import { twMerge } from "tailwind-merge";
 import { Icon } from "./Icon";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
-const TASKBAR_ICONS: { id: string; icon: IconType; title: string }[] = [
+const taskbarIcons: { id: string; icon: IconType; title: string }[] = [
   {
     id: windowMetadataMap[AppsEnum.MSN].id,
     title: windowMetadataMap[AppsEnum.MSN].title,
@@ -18,7 +19,7 @@ const TASKBAR_ICONS: { id: string; icon: IconType; title: string }[] = [
 interface TaskbarProps {
   windows: Record<string, WindowState>;
   isMenuOpen: boolean;
-  activeWindow: string | null;
+  currentActiveZIndexWindow: number;
   onClickMenu: () => void;
   onWindowClick: (windowId: string) => void;
   onOpenWindow: (windowId: string) => void;
@@ -28,7 +29,7 @@ export const Taskbar = ({
   windows,
   isMenuOpen,
   onClickMenu,
-  activeWindow,
+  currentActiveZIndexWindow,
   onWindowClick,
   onOpenWindow,
 }: TaskbarProps) => {
@@ -56,7 +57,12 @@ export const Taskbar = ({
   };
 
   return (
-    <div className="bg-win95-gray z-50 flex h-10 items-center justify-between border-t border-white">
+    <div
+      className="bg-win95-gray z-50 flex items-center justify-between border-t border-white"
+      style={{
+        height: TASKBAR_HEIGHT,
+      }}
+    >
       <div className="flex-shrink-0">
         <button
           className={twMerge(
@@ -78,7 +84,8 @@ export const Taskbar = ({
           if (!windowState.isOpen) return null;
 
           const isActiveAndVisible =
-            activeWindow === windowId && !windowState.isMinimized;
+            windowState.zIndex === currentActiveZIndexWindow &&
+            !windowState.isMinimized;
 
           return (
             <button
@@ -104,7 +111,7 @@ export const Taskbar = ({
       </div>
 
       <div className="border-win95-gray-dark flex h-full items-center border-l px-2">
-        {TASKBAR_ICONS.map((icon) => (
+        {taskbarIcons.map((icon) => (
           <button
             key={icon.id}
             onClick={() => handleIconClick(icon.id)}

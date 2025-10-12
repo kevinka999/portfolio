@@ -11,6 +11,7 @@ type DraggableWindowProps = {
   children: React.ReactNode;
   title: string;
   icon?: IconType;
+  zIndex: number;
   isActive: boolean;
   onClose: () => void;
   onFocus: () => void;
@@ -25,6 +26,7 @@ export const DraggableWindow = ({
   children,
   title,
   icon,
+  zIndex,
   isActive,
   onClose,
   onFocus,
@@ -235,7 +237,7 @@ export const DraggableWindow = ({
 
   const handleWindowClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onFocus();
+    if (!isActive) onFocus();
   };
 
   return (
@@ -250,7 +252,7 @@ export const DraggableWindow = ({
         top: position.y,
         width: size.width,
         height: size.height,
-        zIndex: isActive ? 1000 : 100,
+        zIndex,
       }}
       onClick={handleWindowClick}
     >

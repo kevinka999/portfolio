@@ -15,11 +15,11 @@ export const App = () => {
 
   const {
     windows,
-    activeWindow,
     openWindow,
     closeWindow,
     minimizeWindow,
     bringToFront,
+    getCurrentActiveZIndexWindow,
   } = useWindows();
 
   const handleTaskbarClick = (windowId: string) => {
@@ -76,7 +76,8 @@ export const App = () => {
               key={windowId}
               title={windowState.title}
               icon={windowState.icon}
-              isActive={activeWindow === windowId}
+              zIndex={windowState.zIndex}
+              isActive={windowState.zIndex === getCurrentActiveZIndexWindow()}
               onClose={() => closeWindow(windowId)}
               onFocus={() => bringToFront(windowId)}
               onMinimize={() => minimizeWindow(windowId)}
@@ -91,7 +92,7 @@ export const App = () => {
 
       <Taskbar
         windows={windows}
-        activeWindow={activeWindow}
+        currentActiveZIndexWindow={getCurrentActiveZIndexWindow()}
         onWindowClick={handleTaskbarClick}
         isMenuOpen={isMenuOpen}
         onClickMenu={toggleStartMenu}
@@ -105,16 +106,23 @@ export const App = () => {
       />
 
       {isMenuOpen && (
-        <StartMenu
-          apps={START_MENU_APPS}
-          onItemClick={(item) => {
-            const appInfo = windowInfosMap.find((window) => window.id === item);
-            if (!appInfo) return;
+        <div
+          onClick={() => setIsMenuOpen(false)}
+          className="fixed inset-0 z-99998"
+        >
+          <StartMenu
+            apps={START_MENU_APPS}
+            onItemClick={(item) => {
+              const appInfo = windowInfosMap.find(
+                (window) => window.id === item,
+              );
+              if (!appInfo) return;
 
-            openWindow(item, appInfo);
-            setIsMenuOpen(false);
-          }}
-        />
+              openWindow(item, appInfo);
+              setIsMenuOpen(false);
+            }}
+          />
+        </div>
       )}
     </div>
   );

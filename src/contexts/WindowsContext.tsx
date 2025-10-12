@@ -4,12 +4,12 @@ import React from "react";
 
 type WindowsContextType = {
   windows: Record<string, WindowState>;
-  activeWindow: string | null;
-  openWindow: (windowId: string, state: WindowInfo) => void;
+  openWindow: (windowId: string, state?: WindowInfo) => void;
   closeWindow: (windowId: string) => void;
   minimizeWindow: (windowId: string) => void;
   bringToFront: (windowId: string) => void;
   isWindowOpen: (windowId: string) => boolean;
+  getCurrentActiveZIndexWindow: () => number;
 };
 
 export const WindowsContext = React.createContext<
@@ -19,28 +19,58 @@ export const WindowsContext = React.createContext<
 export const WindowsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [windows, setWindows] = React.useState<Record<string, WindowState>>({});
-  const [activeWindow, setActiveWindow] = React.useState<string | null>(null);
-  const [nextZIndex, setNextZIndex] = React.useState<number>(1001);
+  const [windowsState, setWindowsState] = React.useState<
+    Record<string, WindowState>
+  >({});
 
-  const openWindow = (windowId: string, state: WindowInfo) => {
-    setWindows((prev) => {
+  const bringToFront = (windowId: string) => {
+    setWindowsState((prev) => {
+      const lastIndex = Math.max(...Object.values(prev).map((w) => w.zIndex));
+
+      return {
+        ...prev,
+        [windowId]: {
+          ...prev[windowId],
+          zIndex: lastIndex + 1,
+          isMinimized: false,
+          isOpen: true,
+        },
+      };
+    });
+  };
+
+  const openWindow = (windowId: string, state?: WindowInfo) => {
+    setWindowsState((prev) => {
       const lastPositionOpened = getLastPositionOpened(prev);
-      const existingWindow = prev[windowId];
+      const windowState = prev[windowId] || state;
 
-      if (existingWindow?.isOpen) {
-        bringToFront(windowId);
-        return prev;
+      if (!windowState)
+        throw new Error(`No window content for ${windowId} found`);
+
+      const lastIndex =
+        Object.values(prev).length > 0
+          ? Math.max(...Object.values(prev).map((w) => w.zIndex))
+          : 1000;
+
+      if (windowState?.isOpen) {
+        return {
+          ...prev,
+          [windowId]: {
+            ...prev[windowId],
+            isMinimized: false,
+            zIndex: lastIndex + 1,
+          },
+        };
       }
 
       return {
         ...prev,
         [windowId]: {
-          ...(existingWindow || state),
+          ...windowState,
           isOpen: true,
           isMinimized: false,
-          zIndex: nextZIndex,
-          initialPosition: state.initialPosition || {
+          zIndex: lastIndex + 1,
+          initialPosition: windowState?.initialPosition || {
             x: lastPositionOpened.x + 20,
             y: lastPositionOpened.y + 20,
           },
@@ -49,45 +79,47 @@ export const WindowsProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const bringToFront = (windowId: string) => {
-    setWindows((prev) => ({
-      ...prev,
-      [windowId]: {
-        ...prev[windowId],
-        isMinimized: false,
-        zIndex: nextZIndex,
-      },
-    }));
-    setActiveWindow(windowId);
-    setNextZIndex((prev) => prev + 1);
-  };
-
   const minimizeWindow = (windowId: string) => {
-    setWindows((prev) => ({
+    setWindowsState((prev) => ({
       ...prev,
       [windowId]: { ...prev[windowId], isMinimized: true },
     }));
   };
 
   const closeWindow = (windowId: string) => {
-    setWindows((prev) => ({
+    setWindowsState((prev) => ({
       ...prev,
-      [windowId]: { ...prev[windowId], isOpen: false, isMinimized: false },
+      [windowId]: {
+        ...prev[windowId],
+        isOpen: false,
+        isMinimized: false,
+      },
     }));
   };
 
-  const isWindowOpen = (windowId: string) => windows[windowId]?.isOpen || false;
+  const isWindowOpen = (windowId: string) =>
+    windowsState[windowId]?.isOpen || false;
+
+  const getCurrentActiveZIndexWindow = () => {
+    const openedWindows = Object.values(windowsState).filter(
+      (w) => w.isOpen && !w.isMinimized,
+    );
+
+    return openedWindows.length > 0
+      ? Math.max(...openedWindows.map((w) => w.zIndex))
+      : 0;
+  };
 
   return (
     <WindowsContext.Provider
       value={{
-        windows,
-        activeWindow,
+        windows: windowsState,
         openWindow,
         closeWindow,
         minimizeWindow,
         bringToFront,
         isWindowOpen,
+        getCurrentActiveZIndexWindow,
       }}
     >
       {children}

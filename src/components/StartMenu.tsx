@@ -15,7 +15,7 @@ export const StartMenu = ({ apps, onItemClick }: StartMenuProps) => {
 
   return (
     <div
-      className="boxshadow-win95 bg-win95-gray absolute bottom-10 left-0 z-50 flex flex-row"
+      className="boxshadow-win95 bg-win95-gray absolute bottom-10 left-0 flex flex-row"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-win95-gray-dark ml-1 flex h-auto items-end justify-end overflow-hidden px-1">
