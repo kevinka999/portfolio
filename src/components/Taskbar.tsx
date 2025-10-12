@@ -12,7 +12,7 @@ const taskbarIcons: { id: string; icon: IconType; title: string }[] = [
   {
     id: windowMetadataMap[AppsEnum.MSN].id,
     title: windowMetadataMap[AppsEnum.MSN].title,
-    icon: "green-user",
+    icon: "msn",
   },
 ];
 
