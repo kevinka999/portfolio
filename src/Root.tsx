@@ -2,6 +2,7 @@ import { App } from "./App.tsx";
 import { AIIntegration } from "./components/AIIntegration.tsx";
 import { GlobalContextProvider } from "./contexts/GlobalContext.tsx";
 import { MSNProvider } from "./contexts/MSNContext.tsx";
+import { SystemNotificationProvider } from "./contexts/SystemNotificationContext.tsx";
 import { WindowsProvider } from "./contexts/WindowsContext.tsx";
 
 import "./global.css";
@@ -9,13 +10,15 @@ import "./global.css";
 export const RootComponent = () => {
   return (
     <GlobalContextProvider>
-      <WindowsProvider>
-        <MSNProvider>
-          <AIIntegration />
+      <SystemNotificationProvider>
+        <WindowsProvider>
+          <MSNProvider>
+            <AIIntegration />
 
-          <App />
-        </MSNProvider>
-      </WindowsProvider>
+            <App />
+          </MSNProvider>
+        </WindowsProvider>
+      </SystemNotificationProvider>
     </GlobalContextProvider>
   );
 };

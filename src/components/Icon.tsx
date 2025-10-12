@@ -23,7 +23,10 @@ type IconAvailable =
   | "red-user"
   | "black-user"
   | "computer-connected"
-  | "computer-disconnected";
+  | "computer-disconnected"
+  | "warning"
+  | "error"
+  | "info";
 
 type IconProps = {
   icon: IconAvailable;
@@ -56,6 +59,9 @@ const iconMap: Record<IconAvailable, string> = {
   "black-user": "/images/black-user.svg",
   "computer-connected": "/images/conn_pcs_on_on.png",
   "computer-disconnected": "/images/conn_pcs_no_network.png",
+  warning: "/images/warning.png",
+  error: "/images/error.png",
+  info: "/images/info.png",
 };
 
 const sizeMap: Record<IconProps["size"], string> = {

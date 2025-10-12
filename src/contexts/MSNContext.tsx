@@ -1,4 +1,5 @@
 import { MOCK_USERS } from "@/const";
+import { useSystemNotification, useWindows } from "@/hooks";
 import { Chat, Message, User, UserStatus } from "@/types/msn";
 import { nanoid } from "nanoid";
 import React from "react";
@@ -8,6 +9,13 @@ const currentUser: User = {
   name: "You",
   email: "you@example.com",
   status: UserStatus.ONLINE,
+};
+
+type MessageNotification = {
+  chatId: string;
+  messageId: string;
+  senderId: string;
+  content: string;
 };
 
 type MSNContextType = {
@@ -31,7 +39,52 @@ export const MSNContext = React.createContext<MSNContextType | undefined>(
 
 export const MSNProvider = ({ children }: { children: React.ReactNode }) => {
   const [chats, setChats] = React.useState<Record<string, Chat>>({});
+  const [messageNotifications, setMessageNotifications] = React.useState<
+    MessageNotification[]
+  >([]);
   const [users] = React.useState<User[]>(MOCK_USERS);
+  const { addNotification } = useSystemNotification();
+  const { windows, openWindow } = useWindows();
+
+  React.useEffect(() => {
+    if (messageNotifications.length === 0) return;
+
+    messageNotifications.forEach((notification) => {
+      const chat = chats[notification.chatId];
+      if (!chat) return;
+
+      const isChatWindowOpen = Object.values(windows).some(
+        (window) =>
+          window.id === notification.chatId &&
+          window.isOpen &&
+          !window.isMinimized,
+      );
+
+      if (!isChatWindowOpen) {
+        const sender = users.find((user) => user.id === notification.senderId);
+        if (sender) {
+          addNotification({
+            title: "Você tem uma nova mensagem",
+            message: `${sender.name} te enviou uma mensagem, clique para ver`,
+            onClick: () => {
+              const chat = chats[notification.chatId];
+              if (chat) openWindow(chat.id);
+            },
+            type: "info",
+          });
+        }
+      }
+    });
+
+    setMessageNotifications([]);
+  }, [
+    messageNotifications,
+    openWindow,
+    windows,
+    chats,
+    users,
+    addNotification,
+  ]);
 
   const createChat = (participantId: string): string => {
     const existingChat = Object.values(chats).find(
@@ -67,6 +120,18 @@ export const MSNProvider = ({ children }: { children: React.ReactNode }) => {
       content,
       timestamp: Date.now(),
     };
+
+    if (senderId !== currentUser.id) {
+      setMessageNotifications((prev) => [
+        ...prev,
+        {
+          chatId,
+          messageId: newMessage.id,
+          senderId,
+          content: newMessage.content,
+        },
+      ]);
+    }
 
     setChats((prev) => {
       return {
