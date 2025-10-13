@@ -10,6 +10,7 @@ export enum AppsEnum {
   EXPERIENCE = "experience",
   CONTACT = "contact",
   MSN = "msn",
+  INTERNET = "internet",
 }
 
 export type LanguageAvailables = keyof typeof AVAILABLE_LANGUAGES;
