@@ -1,4 +1,4 @@
-import { About, MSN, Project, Skills } from "@/screens";
+import { About, Internet, MSN, Project, Skills } from "@/screens";
 import { AppsEnum, WindowInfo, WindowMetadata } from "@/types";
 
 export const windowMetadataMap: Record<AppsEnum, WindowMetadata> = {
@@ -31,6 +31,11 @@ export const windowMetadataMap: Record<AppsEnum, WindowMetadata> = {
     id: "Zy2kUw4qXa3bVc6dF9hJk",
     icon: "msn",
     title: "MSN",
+  },
+  [AppsEnum.INTERNET]: {
+    id: "sFjmsvOL6VsZPszmiwsXA",
+    icon: "internet-explorer",
+    title: "Internet",
   },
 };
 
@@ -65,5 +70,10 @@ export const windowInfosMap: WindowInfo[] = [
     ...windowMetadataMap[AppsEnum.MSN],
     content: <MSN />,
     initialSize: { width: 300, height: 700 },
+  },
+  {
+    ...windowMetadataMap[AppsEnum.INTERNET],
+    content: <Internet />,
+    initialSize: { width: 960, height: 540 },
   },
 ];
