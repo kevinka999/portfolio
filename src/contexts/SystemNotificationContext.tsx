@@ -66,7 +66,7 @@ export const SystemNotificationProvider = ({
       {children}
 
       <div
-        className="fixed right-4 z-99999 flex flex-col"
+        className="fixed right-4 z-88888 flex flex-col"
         style={{
           bottom: `${TASKBAR_HEIGHT + NOTIFICATION_MARGIN}px`,
           gap: `${NOTIFICATION_MARGIN}px`,

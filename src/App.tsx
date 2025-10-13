@@ -46,9 +46,12 @@ export const App = () => {
 
   return (
     <div
-      className="bg-win95-background flex min-h-screen flex-col overflow-hidden"
+      className="bg-win95-background crt-screen flex min-h-screen flex-col overflow-hidden"
       onClick={closeStartMenu}
     >
+      <div className="crt-scanline" />
+      <div className="crt-reflection" />
+
       <div className="relative h-full flex-grow overflow-hidden p-4">
         <div className="absolute top-4 left-4 grid grid-cols-1 gap-6">
           {DESKTOP_APPS.map((windowId) => {
@@ -108,7 +111,7 @@ export const App = () => {
       {isMenuOpen && (
         <div
           onClick={() => setIsMenuOpen(false)}
-          className="fixed inset-0 z-99998"
+          className="fixed inset-0 z-88888"
         >
           <StartMenu
             apps={START_MENU_APPS}
