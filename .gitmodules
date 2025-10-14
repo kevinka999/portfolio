@@ -1,0 +1,3 @@
+[submodule "apps/guess-the-play"]
+	path = apps/guess-the-play
+	url = https://github.com/kevinka999/guess-the-play.git
