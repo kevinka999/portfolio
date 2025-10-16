@@ -20,5 +20,9 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
     },
+    parserOptions: {
+      project: "./tsconfig.json",
+      tsconfigRootDir: __dirname,
+    },
   },
 );
