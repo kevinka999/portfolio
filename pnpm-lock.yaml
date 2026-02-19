@@ -4,86 +4,78 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
+dependencies:
+  '@google/genai':
+    specifier: ^1.23.0
+    version: 1.24.0
+  '@tailwindcss/vite':
+    specifier: ^4.1.10
+    version: 4.1.14(vite@6.3.6)
+  dayjs:
+    specifier: ^1.11.18
+    version: 1.11.18
+  nanoid:
+    specifier: ^5.1.6
+    version: 5.1.6
+  react:
+    specifier: ^19.1.0
+    version: 19.2.0
+  react-dom:
+    specifier: ^19.1.0
+    version: 19.2.0(react@19.2.0)
+  react-icons:
+    specifier: ^5.5.0
+    version: 5.5.0(react@19.2.0)
+  tailwind-merge:
+    specifier: ^3.3.1
+    version: 3.3.1
+  tailwindcss:
+    specifier: ^4.1.10
+    version: 4.1.14
 
-  .:
-    dependencies:
-      turbo:
-        specifier: ^2.5.8
-        version: 2.5.8
-
-  apps/root:
-    dependencies:
-      '@google/genai':
-        specifier: ^1.23.0
-        version: 1.24.0
-      '@tailwindcss/vite':
-        specifier: ^4.1.10
-        version: 4.1.14(vite@6.3.6)
-      dayjs:
-        specifier: ^1.11.18
-        version: 1.11.18
-      nanoid:
-        specifier: ^5.1.6
-        version: 5.1.6
-      react:
-        specifier: ^19.1.0
-        version: 19.2.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.2.0(react@19.2.0)
-      react-icons:
-        specifier: ^5.5.0
-        version: 5.5.0(react@19.2.0)
-      tailwind-merge:
-        specifier: ^3.3.1
-        version: 3.3.1
-      tailwindcss:
-        specifier: ^4.1.10
-        version: 4.1.14
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.25.0
-        version: 9.37.0
-      '@types/node':
-        specifier: ^24.0.3
-        version: 24.7.2
-      '@types/react':
-        specifier: ^19.1.2
-        version: 19.2.2
-      '@types/react-dom':
-        specifier: ^19.1.2
-        version: 19.2.1(@types/react@19.2.2)
-      '@vitejs/plugin-react':
-        specifier: ^4.4.1
-        version: 4.7.0(vite@6.3.6)
-      eslint:
-        specifier: ^9.25.0
-        version: 9.37.0
-      eslint-plugin-react-hooks:
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@9.37.0)
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.19
-        version: 0.4.23(eslint@9.37.0)
-      globals:
-        specifier: ^16.0.0
-        version: 16.4.0
-      prettier:
-        specifier: ^3.5.3
-        version: 3.6.2
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.12
-        version: 0.6.14(prettier@3.6.2)
-      typescript:
-        specifier: ~5.8.3
-        version: 5.8.3
-      typescript-eslint:
-        specifier: ^8.30.1
-        version: 8.46.0(eslint@9.37.0)(typescript@5.8.3)
-      vite:
-        specifier: ^6.3.5
-        version: 6.3.6(@types/node@24.7.2)
+devDependencies:
+  '@eslint/js':
+    specifier: ^9.25.0
+    version: 9.37.0
+  '@types/node':
+    specifier: ^24.0.3
+    version: 24.7.2
+  '@types/react':
+    specifier: ^19.1.2
+    version: 19.2.2
+  '@types/react-dom':
+    specifier: ^19.1.2
+    version: 19.2.1(@types/react@19.2.2)
+  '@vitejs/plugin-react':
+    specifier: ^4.4.1
+    version: 4.7.0(vite@6.3.6)
+  eslint:
+    specifier: ^9.25.0
+    version: 9.37.0
+  eslint-plugin-react-hooks:
+    specifier: ^5.2.0
+    version: 5.2.0(eslint@9.37.0)
+  eslint-plugin-react-refresh:
+    specifier: ^0.4.19
+    version: 0.4.23(eslint@9.37.0)
+  globals:
+    specifier: ^16.0.0
+    version: 16.4.0
+  prettier:
+    specifier: ^3.5.3
+    version: 3.6.2
+  prettier-plugin-tailwindcss:
+    specifier: ^0.6.12
+    version: 0.6.14(prettier@3.6.2)
+  typescript:
+    specifier: ~5.8.3
+    version: 5.8.3
+  typescript-eslint:
+    specifier: ^8.30.1
+    version: 8.46.0(eslint@9.37.0)(typescript@5.8.3)
+  vite:
+    specifier: ^6.3.5
+    version: 6.3.6(@types/node@24.7.2)
 
 packages:
 
@@ -2358,66 +2350,6 @@ packages:
     dependencies:
       typescript: 5.8.3
     dev: true
-
-  /turbo-darwin-64@2.5.8:
-    resolution: {integrity: sha512-Dh5bCACiHO8rUXZLpKw+m3FiHtAp2CkanSyJre+SInEvEr5kIxjGvCK/8MFX8SFRjQuhjtvpIvYYZJB4AGCxNQ==}
-    cpu: [x64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /turbo-darwin-arm64@2.5.8:
-    resolution: {integrity: sha512-f1H/tQC9px7+hmXn6Kx/w8Jd/FneIUnvLlcI/7RGHunxfOkKJKvsoiNzySkoHQ8uq1pJnhJ0xNGTlYM48ZaJOQ==}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /turbo-linux-64@2.5.8:
-    resolution: {integrity: sha512-hMyvc7w7yadBlZBGl/bnR6O+dJTx3XkTeyTTH4zEjERO6ChEs0SrN8jTFj1lueNXKIHh1SnALmy6VctKMGnWfw==}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /turbo-linux-arm64@2.5.8:
-    resolution: {integrity: sha512-LQELGa7bAqV2f+3rTMRPnj5G/OHAe2U+0N9BwsZvfMvHSUbsQ3bBMWdSQaYNicok7wOZcHjz2TkESn1hYK6xIQ==}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /turbo-windows-64@2.5.8:
-    resolution: {integrity: sha512-3YdcaW34TrN1AWwqgYL9gUqmZsMT4T7g8Y5Azz+uwwEJW+4sgcJkIi9pYFyU4ZBSjBvkfuPZkGgfStir5BBDJQ==}
-    cpu: [x64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /turbo-windows-arm64@2.5.8:
-    resolution: {integrity: sha512-eFC5XzLmgXJfnAK3UMTmVECCwuBcORrWdewoiXBnUm934DY6QN8YowC/srhNnROMpaKaqNeRpoB5FxCww3eteQ==}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: false
-    optional: true
-
-  /turbo@2.5.8:
-    resolution: {integrity: sha512-5c9Fdsr9qfpT3hA0EyYSFRZj1dVVsb6KIWubA9JBYZ/9ZEAijgUEae0BBR/Xl/wekt4w65/lYLTFaP3JmwSO8w==}
-    hasBin: true
-    optionalDependencies:
-      turbo-darwin-64: 2.5.8
-      turbo-darwin-arm64: 2.5.8
-      turbo-linux-64: 2.5.8
-      turbo-linux-arm64: 2.5.8
-      turbo-windows-64: 2.5.8
-      turbo-windows-arm64: 2.5.8
-    dev: false
 
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
