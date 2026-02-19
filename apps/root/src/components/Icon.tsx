@@ -26,8 +26,7 @@ type IconAvailable =
   | "computer-disconnected"
   | "warning"
   | "error"
-  | "info"
-  | "internet-explorer";
+  | "info";
 
 type IconProps = {
   icon: IconAvailable;
@@ -63,7 +62,6 @@ const iconMap: Record<IconAvailable, string> = {
   warning: "/images/warning.png",
   error: "/images/error.png",
   info: "/images/info.png",
-  "internet-explorer": "/images/internet-explorer.png",
 };
 
 const sizeMap: Record<IconProps["size"], string> = {
