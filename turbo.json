@@ -4,9 +4,8 @@
     "build": {
       "outputs": ["dist/**"]
     },
-    "start": {
-      "persistent": true,
-      "cache": false
+    "check-types": {
+      "dependsOn": ["^check-types"]
     },
     "dev": {
       "persistent": true,
