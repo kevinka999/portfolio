@@ -1,0 +1,32 @@
+version: 2.1
+
+jobs:
+  build-and-deploy:
+    docker:
+      - image: cimg/node:20
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - node-cache-{{ checksum "package-lock.json" }}
+            - node-cache-
+
+      - run: npm install
+
+      - save_cache:
+          key: node-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+      - run: npm run build
+
+      - run:
+          command: |
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no" build/ $VPS_USER@$VPS_HOST:/var/www/portfolio/
+
+workflows:
+  deploy:
+    jobs:
+      - build-and-deploy
