@@ -1,3 +1,3 @@
 export const Internet = () => {
-  return <div>Internet</div>;
+  return <div>Internet Content</div>;
 };
