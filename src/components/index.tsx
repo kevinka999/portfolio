@@ -8,3 +8,4 @@ export * from "./PictureDisplay";
 export * from "./ResizeHandle";
 export * from "./StartMenu";
 export * from "./Taskbar";
+export * from "./VolumeControl";

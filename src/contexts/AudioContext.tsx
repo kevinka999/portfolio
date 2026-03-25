@@ -1,11 +1,11 @@
 import React from "react";
 
 type AudioContextType = {
+  sfxVolume: number;
   clickVolume: number;
   tapVolume: number;
   ambientVolume: number;
-  setClickVolume: React.Dispatch<React.SetStateAction<number>>;
-  setTapVolume: React.Dispatch<React.SetStateAction<number>>;
+  setSfxVolume: React.Dispatch<React.SetStateAction<number>>;
   setAmbientVolume: React.Dispatch<React.SetStateAction<number>>;
   playTapSound: () => void;
 };
@@ -23,6 +23,9 @@ const TAP_SOUNDS = [
 
 const AMBIENT_SOUND = "/sounds/office-white-noise-loop.wav";
 const ALL_SOUNDS = [...CLICK_SOUNDS, ...TAP_SOUNDS];
+const DEFAULT_SFX_VOLUME = 0.35;
+const DEFAULT_TAP_VOLUME = 0.2;
+const TAP_TO_SFX_VOLUME_RATIO = DEFAULT_TAP_VOLUME / DEFAULT_SFX_VOLUME;
 const DEFAULT_AMBIENT_VOLUME = 0.06;
 
 export const AudioContext = React.createContext<AudioContextType | undefined>(
@@ -42,11 +45,12 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const tapSoundIndexRef = React.useRef(0);
   const hasUserInteractedRef = React.useRef(false);
 
-  const [clickVolume, setClickVolume] = React.useState(0.35);
-  const [tapVolume, setTapVolume] = React.useState(0.2);
+  const [sfxVolume, setSfxVolume] = React.useState(DEFAULT_SFX_VOLUME);
   const [ambientVolume, setAmbientVolume] = React.useState(
     DEFAULT_AMBIENT_VOLUME,
   );
+  const clickVolume = sfxVolume;
+  const tapVolume = sfxVolume * TAP_TO_SFX_VOLUME_RATIO;
 
   const playPreparedSound = React.useCallback((src: string, volume: number) => {
     const preparedAudio = preparedAudiosRef.current[src];
@@ -230,11 +234,11 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AudioContext.Provider
       value={{
+        sfxVolume,
         clickVolume,
         tapVolume,
         ambientVolume,
-        setClickVolume,
-        setTapVolume,
+        setSfxVolume,
         setAmbientVolume,
         playTapSound,
       }}

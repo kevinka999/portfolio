@@ -7,6 +7,7 @@ import { BiTime } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import { Icon } from "./Icon";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { VolumeControl } from "./VolumeControl";
 
 const taskbarIcons: { id: string; icon: IconType; title: string }[] = [
   {
@@ -110,7 +111,7 @@ export const Taskbar = ({
         <LanguageSwitcher />
       </div>
 
-      <div className="border-win95-gray-dark flex h-full items-center border-l px-2">
+      <div className="border-win95-gray-dark flex h-full items-center border-l px-2 hover:bg-white/50">
         {taskbarIcons.map((icon) => (
           <button
             key={icon.id}
@@ -120,6 +121,10 @@ export const Taskbar = ({
             <Icon icon={icon.icon} size="verySmall" />
           </button>
         ))}
+      </div>
+
+      <div className="border-win95-gray-dark flex h-full items-center border-l">
+        <VolumeControl />
       </div>
 
       <div className="border-win95-gray-dark flex h-full flex-shrink-0 items-center border-l">

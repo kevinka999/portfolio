@@ -29,7 +29,8 @@ type IconAvailable =
   | "info"
   | "internet-explorer"
   | "fav-pokearena"
-  | "wordpad";
+  | "wordpad"
+  | "speaker";
 
 type IconProps = {
   icon: IconAvailable;
@@ -68,6 +69,7 @@ const iconMap: Record<IconAvailable, string> = {
   "internet-explorer": "/images/internet-explorer.png",
   "fav-pokearena": "/images/favs/pokearena_fav_icon.png",
   wordpad: "/images/write_wordpad-1.png",
+  speaker: "/images/speaker.png",
 };
 
 const sizeMap: Record<IconProps["size"], string> = {
