@@ -7,6 +7,7 @@ export * from "./Icon";
 export * from "./PageHeader";
 export * from "./PictureDisplay";
 export * from "./ResizeHandle";
+export * from "./ResumeCallout";
 export * from "./StartMenu";
 export * from "./Taskbar";
 export * from "./VolumeControl";

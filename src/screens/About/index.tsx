@@ -1,5 +1,5 @@
 import { BlinkingSmile } from "@/BlinkingSmile";
-import { Divider, Icon, PageHeader, PictureDisplay } from "@/components";
+import { Divider, PageHeader, PictureDisplay, ResumeCallout } from "@/components";
 import { PictureCarousel } from "@/components/PictureCarousel";
 
 const sportsPictures: React.ComponentProps<typeof PictureCarousel>["items"] = [
@@ -25,8 +25,6 @@ const sportsPictures: React.ComponentProps<typeof PictureCarousel>["items"] = [
 ];
 
 export const About = () => {
-  const downloadResume = () => {};
-
   return (
     <div className="page">
       <div className="mx-auto flex min-h-full w-full max-w-215 flex-col gap-4 px-8 py-4">
@@ -52,20 +50,7 @@ export const About = () => {
           </p>
         </div>
 
-        <div className="boxshadow-win95 flex flex-row items-center gap-4 p-3">
-          <Icon icon="wordpad" size="medium" alt="Wordpad icon" />
-
-          <div className="flex flex-col leading-snug">
-            <p className="text-[16px] font-bold">Looking for my resume?</p>
-            <button
-              type="button"
-              className="font-writing cursor-pointer bg-transparent text-left text-[14px] text-blue-600 underline"
-              onClick={downloadResume}
-            >
-              Click here to download it
-            </button>
-          </div>
-        </div>
+        <ResumeCallout />
 
         <div className="mt-2 flex min-w-0 flex-col gap-2">
           <p className="font-writing text-[22px] font-bold">About me</p>

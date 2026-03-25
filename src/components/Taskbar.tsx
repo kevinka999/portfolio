@@ -1,6 +1,5 @@
 import { TASKBAR_HEIGHT } from "@/const";
 import { windowMetadataMap } from "@/const/windows";
-import { useDoubleClick } from "@/hooks";
 import { AppsEnum, IconType, WindowState } from "@/types";
 import React from "react";
 import { BiTime } from "react-icons/bi";
