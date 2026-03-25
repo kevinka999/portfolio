@@ -1,6 +1,5 @@
 import { useAudio } from "@/hooks";
 import React from "react";
-import { BiVolumeFull } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import { Icon } from "./Icon";
 

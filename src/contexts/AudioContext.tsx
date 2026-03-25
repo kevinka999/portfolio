@@ -21,8 +21,17 @@ const TAP_SOUNDS = [
   "/sounds/tap_03.wav",
 ] as const;
 
+const KEY_SOUNDS = [
+  "/sounds/key_1.mp3",
+  "/sounds/key_2.mp3",
+  "/sounds/key_3.mp3",
+  "/sounds/key_4.mp3",
+  "/sounds/key_5.mp3",
+  "/sounds/key_6.mp3",
+] as const;
+
 const AMBIENT_SOUND = "/sounds/office-white-noise-loop.wav";
-const ALL_SOUNDS = [...CLICK_SOUNDS, ...TAP_SOUNDS];
+const ALL_SOUNDS = [...CLICK_SOUNDS, ...TAP_SOUNDS, ...KEY_SOUNDS];
 const DEFAULT_SFX_VOLUME = 0.35;
 const DEFAULT_TAP_VOLUME = 0.2;
 const TAP_TO_SFX_VOLUME_RATIO = DEFAULT_TAP_VOLUME / DEFAULT_SFX_VOLUME;
@@ -43,6 +52,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     null,
   );
   const tapSoundIndexRef = React.useRef(0);
+  const keySoundIndexRef = React.useRef(0);
   const hasUserInteractedRef = React.useRef(false);
 
   const [sfxVolume, setSfxVolume] = React.useState(DEFAULT_SFX_VOLUME);
@@ -92,6 +102,14 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
     playPreparedSound(nextTapSound, tapVolume);
   }, [tapVolume, playPreparedSound]);
+
+  const playKeySound = React.useCallback(() => {
+    const nextKeySound = KEY_SOUNDS[keySoundIndexRef.current];
+    keySoundIndexRef.current =
+      (keySoundIndexRef.current + 1) % KEY_SOUNDS.length;
+
+    playPreparedSound(nextKeySound, sfxVolume);
+  }, [playPreparedSound, sfxVolume]);
 
   const ensureAmbientAudioContext = React.useCallback(() => {
     const existingAudioContext = ambientAudioContextRef.current;
@@ -211,11 +229,13 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   }, [ambientVolume]);
 
   React.useEffect(() => {
-    const handleDocumentClick = (event: MouseEvent) => {
+    const isEventInsideApp = (eventTarget: EventTarget | null) => {
       const appRoot = document.querySelector(".viewport-shell");
-      const eventTarget = event.target;
+      return eventTarget instanceof Node && !!appRoot?.contains(eventTarget);
+    };
 
-      if (!(eventTarget instanceof Node) || !appRoot?.contains(eventTarget)) {
+    const handleDocumentClick = (event: MouseEvent) => {
+      if (!isEventInsideApp(event.target)) {
         return;
       }
 
@@ -224,12 +244,26 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
       playClickSound();
     };
 
+    const handleDocumentKeyDown = (event: KeyboardEvent) => {
+      const eventTarget = event.target ?? document.activeElement;
+
+      if (!isEventInsideApp(eventTarget)) {
+        return;
+      }
+
+      hasUserInteractedRef.current = true;
+      startAmbientSound();
+      playKeySound();
+    };
+
     document.addEventListener("click", handleDocumentClick, true);
+    document.addEventListener("keydown", handleDocumentKeyDown, true);
 
     return () => {
       document.removeEventListener("click", handleDocumentClick, true);
+      document.removeEventListener("keydown", handleDocumentKeyDown, true);
     };
-  }, [playClickSound, startAmbientSound]);
+  }, [playClickSound, playKeySound, startAmbientSound]);
 
   return (
     <AudioContext.Provider
