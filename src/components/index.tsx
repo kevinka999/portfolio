@@ -1,5 +1,6 @@
 export * from "./Badge";
 export * from "./Carousel";
+export * from "./DataTable";
 export * from "./DesktopIcon";
 export * from "./Divider";
 export * from "./DraggableWindow";
@@ -10,4 +11,5 @@ export * from "./ResizeHandle";
 export * from "./ResumeCallout";
 export * from "./StartMenu";
 export * from "./Taskbar";
+export * from "./Tabs";
 export * from "./VolumeControl";

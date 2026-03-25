@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon } from "@/components/Icon";
+import { DataTable, Icon, Tabs } from "@/components";
 import { twMerge } from "tailwind-merge";
 
 enum SkillCategory {
@@ -124,6 +124,10 @@ const typeIcons: Record<
 };
 
 const skillCategories = Object.values(SkillCategory);
+const skillCategoryTabs = skillCategories.map((category) => ({
+  label: category,
+  value: category,
+}));
 
 export const Skills = () => {
   const [selectedType, setSelectedType] = React.useState<SkillCategory>(
@@ -136,20 +140,11 @@ export const Skills = () => {
 
   return (
     <div className="flex h-full flex-col gap-2">
-      <div className="boxshadow-win95 bg-win95-gray flex p-1">
-        {skillCategories.map((category, index) => (
-          <button
-            key={`${category}-${index}`}
-            className={twMerge(
-              "px-3 py-1 text-sm",
-              selectedType === category ? "button active" : "hover:bg-white/50",
-            )}
-            onClick={() => setSelectedType(category)}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+      <Tabs
+        items={skillCategoryTabs}
+        value={selectedType}
+        onChange={setSelectedType}
+      />
 
       <div className="boxshadow-win95 flex min-h-0 flex-1 flex-col bg-white p-1">
         <div className="bg-win95-gray flex items-center gap-2 border-b border-gray-400 p-2">
@@ -159,32 +154,32 @@ export const Skills = () => {
 
         <div className="flex-1 overflow-hidden">
           <div className="h-full overflow-y-auto">
-            <table className="w-full">
-              <thead className="bg-win95-gray">
-                <tr className="border-b border-gray-400 text-left">
-                  <th className="px-4 py-2 text-sm font-bold">Skill</th>
-                  <th className="px-4 py-2 text-sm font-bold">Experience</th>
-                </tr>
-              </thead>
+            <DataTable.Root>
+              <DataTable.Head>
+                <DataTable.Row className="border-b border-gray-400 text-left">
+                  <DataTable.HeaderCell>Skill</DataTable.HeaderCell>
+                  <DataTable.HeaderCell>Experience</DataTable.HeaderCell>
+                </DataTable.Row>
+              </DataTable.Head>
 
-              <tbody>
+              <DataTable.Body>
                 {filteredSkills.map((skill, index) => (
-                  <tr
+                  <DataTable.Row
                     key={`${skill.name}-${index}`}
                     className={twMerge(
                       "border-b border-gray-200",
                       index % 2 === 0 ? "bg-white" : "bg-gray-100",
                     )}
                   >
-                    <td className="p-3 text-sm">{skill.name}</td>
-                    <td className="p-3 text-sm">
+                    <DataTable.Cell>{skill.name}</DataTable.Cell>
+                    <DataTable.Cell>
                       {skill.years}{" "}
                       {Math.ceil(skill.years) === 1 ? "year" : "years"}
-                    </td>
-                  </tr>
+                    </DataTable.Cell>
+                  </DataTable.Row>
                 ))}
-              </tbody>
-            </table>
+              </DataTable.Body>
+            </DataTable.Root>
           </div>
         </div>
 

@@ -5,9 +5,8 @@ export type IconType = React.ComponentProps<typeof Icon>["icon"];
 
 export enum AppsEnum {
   ABOUT = "about",
-  PROJECTS = "projects",
-  SKILLS = "skills",
   EXPERIENCE = "experience",
+  PROJECTS = "projects",
   CONTACT = "contact",
   MSN = "msn",
   INTERNET = "internet",
