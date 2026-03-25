@@ -112,7 +112,7 @@ export const App = () => {
         {isMenuOpen && (
           <div
             onClick={() => setIsMenuOpen(false)}
-            className="fixed inset-0 z-88888"
+            className="absolute inset-0 z-88888"
           >
             <StartMenu
               apps={START_MENU_APPS}
