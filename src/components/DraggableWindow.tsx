@@ -323,10 +323,10 @@ export const DraggableWindow = ({
         const deltaX = e.clientX - resizeStartRef.current.x;
         const deltaY = e.clientY - resizeStartRef.current.y;
 
-        let newWidth = resizeStartRef.current.width;
-        let newHeight = resizeStartRef.current.height;
-        let newX = resizeStartRef.current.positionX;
-        let newY = resizeStartRef.current.positionY;
+        const newWidth = resizeStartRef.current.width;
+        const newHeight = resizeStartRef.current.height;
+        const newX = resizeStartRef.current.positionX;
+        const newY = resizeStartRef.current.positionY;
         const resizedLayout = getResizedWindowLayout({
           deltaX,
           deltaY,

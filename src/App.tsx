@@ -1,7 +1,7 @@
 import React from "react";
 import { DesktopIcon, DraggableWindow, StartMenu, Taskbar } from "./components";
 import { windowInfosMap, windowMetadataMap } from "./const/windows";
-import { useWindows } from "./hooks";
+import { useAudio, useWindows } from "./hooks";
 import { AppsEnum } from "./types";
 
 const DESKTOP_APPS = Object.values(AppsEnum).map(
@@ -12,6 +12,7 @@ const START_MENU_APPS = Object.values(AppsEnum);
 
 export const App = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
+  const { playTapSound } = useAudio();
 
   const {
     windows,
@@ -67,6 +68,7 @@ export const App = () => {
                   icon={appInfo.icon}
                   label={appInfo.title}
                   onClick={() => openWindow(windowId, appInfo)}
+                  onHover={playTapSound}
                 />
               );
             })}

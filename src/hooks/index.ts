@@ -1,4 +1,5 @@
 export * from "./useAIChat";
+export * from "./useAudio";
 export * from "./useDoubleClick";
 export * from "./useGlobal";
 export * from "./useLocalStorage";
