@@ -1,158 +1,170 @@
-import { Badge } from "@/components/Badge";
-import {
-  FiMail,
-  FiLinkedin,
-  FiGithub,
-  FiMapPin,
-  FiCalendar,
-  FiBriefcase,
-  FiFileText,
-  FiDownload,
-} from "react-icons/fi";
+import type { ReactNode } from "react";
+import { BlinkingSmile } from "@/BlinkingSmile";
+import { Divider, Icon, PictureDisplay } from "@/components";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { PictureCarousel } from "@/components/PictureCarousel";
 
-type BadgeType = {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
+type ContactLink = {
+  label: string;
+  href: string;
+  icon: ReactNode;
 };
 
-const badges: BadgeType[] = [
+const contactLinks: ContactLink[] = [
   {
-    icon: <FiMapPin size={24} />,
-    title: "Location",
-    value: "San Francisco, CA",
+    label: "GitHub",
+    href: "https://github.com/kevinkatzer",
+    icon: <FaGithub size={12} aria-hidden="true" />,
   },
-  { icon: <FiMail size={24} />, title: "Email", value: "kevinka99@gmail.com" },
   {
-    icon: <FiCalendar size={24} />,
-    title: "Availability",
-    value: "Open to opportunities",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/kevinkatzer/",
+    icon: <FaLinkedin size={12} aria-hidden="true" />,
   },
-  { icon: <FiBriefcase size={24} />, title: "Experience", value: "5+ years" },
 ];
 
-const techStack = ["React", "TypeScript", "Node.js", "Next.js", "AWS"];
+const sportsPictures: React.ComponentProps<typeof PictureCarousel>["items"] = [
+  {
+    src: "/images/assets/image_02.jpg",
+    alt: "Me playing volleyball",
+    label:
+      "Volleyball has become part of my routine, something that helped me grow as a person and connect with the sport.",
+    offset: "50% 30%",
+  },
+  {
+    src: "/images/assets/image_03.png",
+    alt: "Me surfing",
+    label:
+      "Surfing is an adventure I enjoy whenever I can. The connection with nature and that feeling of butterflies in my stomach that only those in the ocean truly understand.",
+  },
+  {
+    src: "/images/assets/image_04.jpg",
+    alt: "Me playing flag football",
+    label:
+      "I’ve always enjoyed trying new sports, and flag football has been one of my recent passions.",
+  },
+];
 
 export const About = () => {
-  const handleEmailClick = () => {
-    window.open("mailto:kevinka99@gmail.com", "_blank");
-  };
-
-  const handleLinkedInClick = () => {
-    window.open("https://www.linkedin.com/in/kevinkatzer/", "_blank");
-  };
-
-  const handleGithubClick = () => {
-    window.open("https://github.com/kevinkatzer", "_blank");
-  };
-
-  const handleDownloadResume = () => {
-    window.open("/cv.pdf", "_blank");
-  };
+  const downloadResume = () => {};
 
   return (
-    <div className="flex flex-col gap-6 md:flex-row md:items-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="boxshadow-win95 bg-win95-gray p-2">
-          <div className="h-32 w-32 overflow-hidden">
-            <img
-              src="/images/profile-picture.jpeg"
-              alt="Profile"
-              className="h-full w-full scale-200 object-cover object-[50%_25%]"
-            />
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center gap-2">
-          <div className="flex flex-col items-center">
-            <h1 className="text-xl font-bold">Kevin Katzer</h1>
-            <h2 className="text-sm text-gray-800">Full Stack Developer</h2>
+    <div className="page">
+      <div className="mx-auto flex min-h-full w-full max-w-215 flex-col gap-4 px-8 py-4">
+        <div className="line flex flex-row items-center justify-between gap-3">
+          <div className="leading-tight">
+            <h1 className="font-writing text-[28px] font-bold">
+              Welcome <BlinkingSmile />
+            </h1>
+            <p className="font-writing text-[22px]">Let Me Introduce Myself</p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 animate-pulse rounded-full bg-green-500"></div>
-            <span className="text-sm text-gray-800">Available for work</span>
-          </div>
-        </div>
+          <div className="flex flex-col items-end justify-center text-center">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {contactLinks.map((link, index) => (
+                <div key={link.href} className="inline-flex items-center gap-3">
+                  <a
+                    href={link.href}
+                    className="font-writing inline-flex cursor-pointer items-center gap-1 text-[14px] text-blue-600 underline"
+                    target={link.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      link.href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                  >
+                    {link.label}
+                    {link.icon}
+                  </a>
 
-        <div className="flex justify-center gap-3">
-          <button
-            className={`button cursor-pointer p-2`}
-            aria-label="Email"
-            onClick={handleEmailClick}
-          >
-            <FiMail size={18} />
-          </button>
-          <button
-            className={`button cursor-pointer p-2`}
-            aria-label="LinkedIn"
-            onClick={handleLinkedInClick}
-          >
-            <FiLinkedin size={18} />
-          </button>
-          <button
-            className={`button cursor-pointer p-2`}
-            aria-label="GitHub"
-            onClick={handleGithubClick}
-          >
-            <FiGithub size={18} />
-          </button>
-        </div>
-
-        <button
-          className={`button flex cursor-pointer items-center gap-2 px-4 py-2`}
-          onClick={handleDownloadResume}
-        >
-          <FiDownload size={24} />
-          <span className="text-sm">Download Resume</span>
-        </button>
-      </div>
-
-      <div className="flex flex-col gap-6">
-        <div className="boxshadow-win95 flex flex-col gap-3 bg-white p-4">
-          <div className="flex items-center gap-2">
-            <FiFileText size={24} />
-            <h3 className="text-lg font-bold">About Me</h3>
-          </div>
-
-          <div className="flex flex-col gap-2 text-sm text-gray-800">
-            <p>
-              Welcome to my portfolio! I'm a passionate developer with expertise
-              in building modern web applications that combine cutting-edge
-              technology with intuitive user experiences.
-            </p>
-            <p>
-              With over 5 years of experience in software development, I
-              specialize in creating responsive, user-friendly applications
-              using the latest technologies and best practices. I love turning
-              complex problems into simple, beautiful solutions.
-            </p>
-          </div>
-
-          <div className="flex gap-2">
-            {techStack.map((tech, index) => (
-              <Badge key={`${tech}-${index}`} text={tech} size="small" />
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {badges.map((badge, index) => (
-            <div
-              key={index}
-              className="boxshadow-win95 flex items-center bg-white p-3"
-            >
-              <div className="flex items-center gap-3">
-                {badge.icon}
-                <div>
-                  <h3 className="text-sm font-bold">{badge.title}</h3>
-                  <p className="text-sm wrap-anywhere text-gray-800">
-                    {badge.value}
-                  </p>
+                  {index < contactLinks.length - 1 ? (
+                    <span className="font-writing text-[14px]">/</span>
+                  ) : null}
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+
+            <span className="font-writing inline-flex text-[14px]">
+              kevinka999@gmail.com
+            </span>
+          </div>
+        </div>
+
+        <Divider />
+
+        <div className="flex flex-col gap-4">
+          <p className="font-writing text-[14px]">
+            My name is Kevin Katzer and I'm a Full Stack Developer with 7+ years
+            of experience building (or hacking as my dad would say) web
+            applications. My main focus lately in on the JavaScript and
+            TypeScript ecosystem, delivering good user experiences and building
+            reliable systems a cross modern architectures and platform
+            engineering,
+          </p>
+        </div>
+
+        <div className="boxshadow-win95 flex flex-row items-center gap-4 p-3">
+          <Icon icon="wordpad" size="medium" alt="Wordpad icon" />
+
+          <div className="flex flex-col leading-snug">
+            <p className="text-[16px] font-bold">Looking for my resume?</p>
+            <button
+              type="button"
+              className="font-writing cursor-pointer bg-transparent text-left text-[14px] text-blue-600 underline"
+              onClick={downloadResume}
+            >
+              Click here to download it
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-2 flex min-w-0 flex-col gap-2">
+          <p className="font-writing text-[22px] font-bold">About me</p>
+
+          <div className="flow-root">
+            <PictureDisplay
+              className="mb-4 md:float-right md:mb-3 md:ml-6 md:w-2/5"
+              image="/images/assets/image_01.jpeg"
+              alt="Me as a child playing on the computer"
+              label="Me probably playing Mario or emulating a Pokemon game."
+            />
+
+            <p className="font-writing min-w-0 text-[14px]">
+              I’ve been fascinated by computers since when I was a kid. When I
+              moved to Santa Catarina when I was eight I didn’t had many kids
+              around to play with, which led me to spend a lot of time on the
+              computer, something that quickly turned into a habit and a
+              passion. It was during this time that my first dream was born: to
+              create my own games.
+            </p>
+
+            <p className="font-writing mt-4 min-w-0 text-[14px]">
+              In high school, I had the opportunity to study at a technical
+              school, where I chose an IT program to take my first steps toward
+              that goal. Over time, during my technical studies, my interests
+              naturally shifted toward web development. While my passion for
+              game development remains, it has become more of a personal hobby,
+              while I continue to grow professionally in the web development
+              field.
+            </p>
+
+            <p className="font-writing mt-4 min-w-0 text-[14px]">
+              Alongside my studies, I discovered another side of myself through
+              sports. I became actively involved in athletics, competing in
+              beach volleyball championships representing my city at the youth
+              level. To this day, I continue to explore different sports,
+              including basketball, volleyball, flag football, and surfing
+              whenever I can.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-2 flex min-w-0 flex-col gap-2">
+          <p className="font-writing text-[22px] font-bold">
+            Life Outside the Screen
+          </p>
+
+          <PictureCarousel items={sportsPictures} />
         </div>
       </div>
     </div>

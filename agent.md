@@ -47,7 +47,13 @@ Important note:
 - Prefer small components with a clear responsibility.
 - Each page/app should be a component inside `@/screens`.
 - Use the `@/` alias for internal imports whenever it makes sense.
+- New reusable components should usually accept `className`, since Tailwind styling often depends on inheriting classes from the parent usage.
+- When merging Tailwind classes, always use `twMerge`.
+- For simple cases, avoid creating extra variables just to compose classes. Prefer direct usage like `twMerge("flex flex-col ...", className)`.
+- If the class composition becomes more complex, it is fine to merge variables and `className` together with `twMerge`.
 - Whenever possible, move pure functions, constants, and static objects outside the component to avoid unnecessary recreation on each render.
+- Whenever you declare static objects or arrays outside the component, always create an explicit type for the contract outside the component as well.
+- Example: `type ContactLink = { label: string; href: string }` and then `const contactLinks: ContactLink[] = [...]`.
 - Avoid `React.useCallback` and `React.useMemo` by default.
 - Only use `useCallback` or `useMemo` when there is a real and meaningful recalculation or rerender cost.
 

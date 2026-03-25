@@ -4,6 +4,7 @@ export * from "./DesktopIcon";
 export * from "./Divider";
 export * from "./DraggableWindow";
 export * from "./Icon";
+export * from "./PictureDisplay";
 export * from "./ResizeHandle";
 export * from "./StartMenu";
 export * from "./Taskbar";
