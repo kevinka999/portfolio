@@ -1,5 +1,15 @@
 import { IconType } from "./index";
 
+export type WindowPosition = {
+  x: number;
+  y: number;
+};
+
+export type WindowSize = {
+  width: number;
+  height: number;
+};
+
 export type WindowMetadata = {
   id: string;
   icon: IconType;
@@ -8,8 +18,8 @@ export type WindowMetadata = {
 
 export type WindowInfo = WindowMetadata & {
   content: React.ReactNode;
-  initialSize?: { width: number; height: number };
-  initialPosition?: { x: number; y: number };
+  initialSize?: WindowSize;
+  initialPosition?: WindowPosition;
 };
 
 export type WindowState = WindowInfo & {

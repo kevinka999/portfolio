@@ -1,5 +1,5 @@
 import { WindowInfo, WindowState } from "@/types";
-import { getLastPositionOpened } from "@/utils";
+import { getCascadedWindowPosition, getLastPositionOpened } from "@/utils";
 import React from "react";
 
 type WindowsContextType = {
@@ -70,10 +70,9 @@ export const WindowsProvider: React.FC<{ children: React.ReactNode }> = ({
           isOpen: true,
           isMinimized: false,
           zIndex: lastIndex + 1,
-          initialPosition: windowState?.initialPosition || {
-            x: lastPositionOpened.x + 20,
-            y: lastPositionOpened.y + 20,
-          },
+          initialPosition:
+            windowState?.initialPosition ||
+            getCascadedWindowPosition(lastPositionOpened),
         },
       };
     });

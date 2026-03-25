@@ -43,28 +43,22 @@ export const windowInfosMap: WindowInfo[] = [
   {
     ...windowMetadataMap[AppsEnum.ABOUT],
     content: <About />,
-    initialPosition: { x: 100, y: 50 },
-    initialSize: { width: 960, height: 540 },
   },
   {
     ...windowMetadataMap[AppsEnum.PROJECTS],
     content: <Project />,
-    initialSize: { width: 1280, height: 720 },
   },
   {
     ...windowMetadataMap[AppsEnum.SKILLS],
     content: <Skills />,
-    initialSize: { width: 960, height: 540 },
   },
   {
     ...windowMetadataMap[AppsEnum.EXPERIENCE],
     content: <></>,
-    initialSize: { width: 960, height: 540 },
   },
   {
     ...windowMetadataMap[AppsEnum.CONTACT],
     content: <></>,
-    initialSize: { width: 960, height: 540 },
   },
   {
     ...windowMetadataMap[AppsEnum.MSN],
@@ -74,6 +68,5 @@ export const windowInfosMap: WindowInfo[] = [
   {
     ...windowMetadataMap[AppsEnum.INTERNET],
     content: <Internet />,
-    initialSize: { width: 960, height: 540 },
   },
 ];
