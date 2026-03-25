@@ -1,4 +1,5 @@
 import { User, UserStatus } from "@/types";
+export * from "./contact";
 
 export const TASKBAR_HEIGHT = 40;
 export const WINDOW_DEFAULT_INSET_RATIO = 0.1;

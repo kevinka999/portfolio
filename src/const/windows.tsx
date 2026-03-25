@@ -1,4 +1,4 @@
-import { About, Internet, MSN, Project, Skills } from "@/screens";
+import { About, Internet, MSN, Project, Skills, Contact } from "@/screens";
 import { AppsEnum, WindowInfo, WindowMetadata } from "@/types";
 
 export const windowMetadataMap: Record<AppsEnum, WindowMetadata> = {
@@ -58,7 +58,7 @@ export const windowInfosMap: WindowInfo[] = [
   },
   {
     ...windowMetadataMap[AppsEnum.CONTACT],
-    content: <></>,
+    content: <Contact />,
   },
   {
     ...windowMetadataMap[AppsEnum.MSN],

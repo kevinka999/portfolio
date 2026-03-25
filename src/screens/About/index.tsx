@@ -1,27 +1,6 @@
-import type { ReactNode } from "react";
 import { BlinkingSmile } from "@/BlinkingSmile";
-import { Divider, Icon, PictureDisplay } from "@/components";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { Divider, Icon, PageHeader, PictureDisplay } from "@/components";
 import { PictureCarousel } from "@/components/PictureCarousel";
-
-type ContactLink = {
-  label: string;
-  href: string;
-  icon: ReactNode;
-};
-
-const contactLinks: ContactLink[] = [
-  {
-    label: "GitHub",
-    href: "https://github.com/kevinkatzer",
-    icon: <FaGithub size={12} aria-hidden="true" />,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/kevinkatzer/",
-    icon: <FaLinkedin size={12} aria-hidden="true" />,
-  },
-];
 
 const sportsPictures: React.ComponentProps<typeof PictureCarousel>["items"] = [
   {
@@ -51,44 +30,14 @@ export const About = () => {
   return (
     <div className="page">
       <div className="mx-auto flex min-h-full w-full max-w-215 flex-col gap-4 px-8 py-4">
-        <div className="line flex flex-row items-center justify-between gap-3">
-          <div className="leading-tight">
-            <h1 className="font-writing text-[28px] font-bold">
+        <PageHeader
+          title={
+            <>
               Welcome <BlinkingSmile />
-            </h1>
-            <p className="font-writing text-[22px]">Let Me Introduce Myself</p>
-          </div>
-
-          <div className="flex flex-col items-end justify-center text-center">
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {contactLinks.map((link, index) => (
-                <div key={link.href} className="inline-flex items-center gap-3">
-                  <a
-                    href={link.href}
-                    className="font-writing inline-flex cursor-pointer items-center gap-1 text-[14px] text-blue-600 underline"
-                    target={link.href.startsWith("http") ? "_blank" : undefined}
-                    rel={
-                      link.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                  >
-                    {link.label}
-                    {link.icon}
-                  </a>
-
-                  {index < contactLinks.length - 1 ? (
-                    <span className="font-writing text-[14px]">/</span>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-
-            <span className="font-writing inline-flex text-[14px]">
-              kevinka999@gmail.com
-            </span>
-          </div>
-        </div>
+            </>
+          }
+          subtitle="Let Me Introduce Myself"
+        />
 
         <Divider />
 
