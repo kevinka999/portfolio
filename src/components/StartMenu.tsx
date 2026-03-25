@@ -1,3 +1,4 @@
+import { TASKBAR_HEIGHT } from "@/const";
 import { windowMetadataMap } from "@/const/windows";
 import { AppsEnum } from "@/types";
 import { Divider } from "./Divider";
@@ -15,7 +16,8 @@ export const StartMenu = ({ apps, onItemClick }: StartMenuProps) => {
 
   return (
     <div
-      className="boxshadow-win95 bg-win95-gray absolute bottom-10 left-0 flex flex-row"
+      className="boxshadow-win95 bg-win95-gray absolute left-0 flex flex-row"
+      style={{ bottom: TASKBAR_HEIGHT }}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-win95-gray-dark ml-1 flex h-auto items-end justify-end overflow-hidden px-1">

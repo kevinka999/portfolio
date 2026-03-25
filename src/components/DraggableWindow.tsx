@@ -265,13 +265,7 @@ export const DraggableWindow = ({
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [
-    isDragging,
-    isResizing,
-    resizeDirection,
-    size,
-    isMaximized,
-  ]);
+  }, [isDragging, isResizing, resizeDirection, size, isMaximized]);
 
   const handleMinimizeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -373,7 +367,7 @@ export const DraggableWindow = ({
 
       <Divider />
 
-      <div className="bg-win95-gray h-full w-full flex-1 overflow-y-auto p-2">
+      <div className="bg-win95-gray h-full min-h-0 w-full flex-1 overflow-x-hidden overflow-y-auto p-2">
         {children}
       </div>
     </div>
