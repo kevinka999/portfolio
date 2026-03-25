@@ -22,6 +22,40 @@ type DraggableWindowProps = {
 
 const minSize = { width: 200, height: 150 };
 
+const getDesktopRect = (windowElement: HTMLDivElement | null) => {
+  const parentRect = windowElement?.parentElement?.getBoundingClientRect();
+
+  if (parentRect) {
+    return {
+      left: parentRect.left,
+      top: parentRect.top,
+      width: parentRect.width,
+      height: parentRect.height,
+    };
+  }
+
+  return {
+    left: 0,
+    top: 0,
+    width: window.innerWidth,
+    height: window.innerHeight - TASKBAR_HEIGHT,
+  };
+};
+
+const clampPosition = (
+  nextPosition: { x: number; y: number },
+  nextSize: { width: number; height: number },
+  desktopBounds: { width: number; height: number },
+) => {
+  const maxX = Math.max(0, desktopBounds.width - nextSize.width);
+  const maxY = Math.max(0, desktopBounds.height - nextSize.height);
+
+  return {
+    x: Math.max(0, Math.min(nextPosition.x, maxX)),
+    y: Math.max(0, Math.min(nextPosition.y, maxY)),
+  };
+};
+
 export const DraggableWindow = ({
   children,
   title,
@@ -41,15 +75,6 @@ export const DraggableWindow = ({
   const [resizeDirection, setResizeDirection] =
     React.useState<ResizeDirectionEnum | null>(null);
   const [isMaximized, setIsMaximized] = React.useState(false);
-  const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
-  const [resizeStart, setResizeStart] = React.useState({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    positionX: 0,
-    positionY: 0,
-  });
   const [prevState, setPrevState] = React.useState({
     position: initialPosition,
     size: initialSize,
@@ -60,13 +85,23 @@ export const DraggableWindow = ({
   });
 
   const windowRef = React.useRef<HTMLDivElement>(null);
-  const titleBarRef = React.useRef<HTMLDivElement>(null);
+  const dragStartRef = React.useRef({ x: 0, y: 0 });
+  const resizeStartRef = React.useRef({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    positionX: 0,
+    positionY: 0,
+  });
 
   React.useEffect(() => {
     const updateDesktopSize = () => {
+      const desktopRect = getDesktopRect(windowRef.current);
+
       setDesktopSize({
-        width: window.innerWidth,
-        height: window.innerHeight - TASKBAR_HEIGHT,
+        width: desktopRect.width,
+        height: desktopRect.height,
       });
     };
 
@@ -83,16 +118,17 @@ export const DraggableWindow = ({
 
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(true);
     onFocus();
 
     const rect = windowRef.current?.getBoundingClientRect();
     if (rect) {
-      setDragStart({
+      dragStartRef.current = {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top,
-      });
+      };
     }
+
+    setIsDragging(true);
   };
 
   const handleResizeStart = (
@@ -103,18 +139,19 @@ export const DraggableWindow = ({
 
     e.preventDefault();
     e.stopPropagation();
-    setIsResizing(true);
     setResizeDirection(direction);
     onFocus();
 
-    setResizeStart({
+    resizeStartRef.current = {
       x: e.clientX,
       y: e.clientY,
       width: size.width,
       height: size.height,
       positionX: position.x,
       positionY: position.y,
-    });
+    };
+
+    setIsResizing(true);
   };
 
   const handleTitleBarDoubleClick = (e: React.MouseEvent) => {
@@ -133,63 +170,82 @@ export const DraggableWindow = ({
     }
 
     setIsMaximized(false);
-    setPosition(prevState.position);
+    setPosition(clampPosition(prevState.position, prevState.size, desktopSize));
     setSize(prevState.size);
   };
 
   React.useEffect(() => {
+    if (!isMaximized) return;
+
+    setPosition({ x: 0, y: 0 });
+    setSize(desktopSize);
+  }, [desktopSize, isMaximized]);
+
+  React.useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
+      const desktopRect = getDesktopRect(windowRef.current);
+      const desktopBounds = {
+        width: desktopRect.width,
+        height: desktopRect.height,
+      };
+
       if (isDragging && !isMaximized) {
-        const newX = e.clientX - dragStart.x;
-        const newY = e.clientY - dragStart.y;
-
-        const maxX = window.innerWidth - size.width;
-        const maxY = window.innerHeight - size.height - TASKBAR_HEIGHT;
-
-        const boundedX = Math.max(0, Math.min(newX, maxX));
-        const boundedY = Math.max(0, Math.min(newY, maxY));
-
-        setPosition({ x: boundedX, y: boundedY });
+        setPosition(
+          clampPosition(
+            {
+              x: e.clientX - desktopRect.left - dragStartRef.current.x,
+              y: e.clientY - desktopRect.top - dragStartRef.current.y,
+            },
+            size,
+            desktopBounds,
+          ),
+        );
       }
 
       if (isResizing && !isMaximized && resizeDirection) {
-        const deltaX = e.clientX - resizeStart.x;
-        const deltaY = e.clientY - resizeStart.y;
+        const deltaX = e.clientX - resizeStartRef.current.x;
+        const deltaY = e.clientY - resizeStartRef.current.y;
 
-        let newWidth = resizeStart.width;
-        let newHeight = resizeStart.height;
-        let newX = resizeStart.positionX;
-        let newY = resizeStart.positionY;
+        let newWidth = resizeStartRef.current.width;
+        let newHeight = resizeStartRef.current.height;
+        let newX = resizeStartRef.current.positionX;
+        let newY = resizeStartRef.current.positionY;
 
         if (resizeDirection.includes("e")) {
-          newWidth = Math.max(minSize.width, resizeStart.width + deltaX);
+          newWidth = Math.max(
+            minSize.width,
+            resizeStartRef.current.width + deltaX,
+          );
         } else if (resizeDirection.includes("w")) {
           const widthChange = Math.min(
             deltaX,
-            resizeStart.width - minSize.width,
+            resizeStartRef.current.width - minSize.width,
           );
-          newWidth = resizeStart.width - widthChange;
-          newX = resizeStart.positionX + widthChange;
+          newWidth = resizeStartRef.current.width - widthChange;
+          newX = resizeStartRef.current.positionX + widthChange;
         }
 
         if (resizeDirection.includes("s")) {
-          newHeight = Math.max(minSize.height, resizeStart.height + deltaY);
+          newHeight = Math.max(
+            minSize.height,
+            resizeStartRef.current.height + deltaY,
+          );
         } else if (resizeDirection.includes("n")) {
           const heightChange = Math.min(
             deltaY,
-            resizeStart.height - minSize.height,
+            resizeStartRef.current.height - minSize.height,
           );
-          newHeight = resizeStart.height - heightChange;
-          newY = resizeStart.positionY + heightChange;
+          newHeight = resizeStartRef.current.height - heightChange;
+          newY = resizeStartRef.current.positionY + heightChange;
         }
 
-        const maxX = window.innerWidth - newWidth;
-        const maxY = window.innerHeight - newHeight - TASKBAR_HEIGHT;
+        const boundedPosition = clampPosition(
+          { x: newX, y: newY },
+          { width: newWidth, height: newHeight },
+          desktopBounds,
+        );
 
-        newX = Math.max(0, Math.min(newX, maxX));
-        newY = Math.max(0, Math.min(newY, maxY));
-
-        setPosition({ x: newX, y: newY });
+        setPosition(boundedPosition);
         setSize({ width: newWidth, height: newHeight });
       }
     };
@@ -212,11 +268,8 @@ export const DraggableWindow = ({
   }, [
     isDragging,
     isResizing,
-    dragStart,
-    resizeStart,
     resizeDirection,
     size,
-    position,
     isMaximized,
   ]);
 
@@ -270,7 +323,6 @@ export const DraggableWindow = ({
       )}
 
       <div
-        ref={titleBarRef}
         className={twMerge(
           "flex cursor-move items-center justify-between px-2 py-1 select-none",
           isActive
