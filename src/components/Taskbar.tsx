@@ -36,11 +36,6 @@ export const Taskbar = ({
 }: TaskbarProps) => {
   const [time, setTime] = React.useState<Date>(new Date());
 
-  const { onClick: handleIconClick } = useDoubleClick({
-    onDoubleClick: onOpenWindow,
-    delay: 500,
-  });
-
   React.useEffect(() => {
     const timer = setInterval(() => {
       setTime(new Date());
@@ -115,7 +110,7 @@ export const Taskbar = ({
         {taskbarIcons.map((icon) => (
           <button
             key={icon.id}
-            onClick={() => handleIconClick(icon.id)}
+            onClick={() => onOpenWindow(icon.id)}
             title={icon.title}
           >
             <Icon icon={icon.icon} size="verySmall" />
