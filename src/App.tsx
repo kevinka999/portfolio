@@ -45,88 +45,90 @@ export const App = () => {
   const closeStartMenu = () => setIsMenuOpen(false);
 
   return (
-    <div
-      className="bg-win95-background crt-screen flex min-h-screen flex-col overflow-hidden"
-      onClick={closeStartMenu}
-    >
-      <div className="crt-scanline" />
-      <div className="crt-reflection" />
+    <div className="viewport-shell">
+      <div
+        className="viewport-frame bg-win95-background crt-screen flex h-full w-full flex-col overflow-hidden"
+        onClick={closeStartMenu}
+      >
+        <div className="crt-scanline" />
+        <div className="crt-reflection" />
 
-      <div className="relative h-full flex-grow overflow-hidden p-4">
-        <div className="absolute top-4 left-4 grid grid-cols-1 gap-6">
-          {DESKTOP_APPS.map((windowId) => {
-            const appInfo = windowInfosMap.find(
-              (window) => window.id === windowId,
-            );
-            if (!appInfo) return null;
+        <div className="relative h-full flex-grow overflow-hidden p-4">
+          <div className="absolute top-4 left-4 grid grid-cols-1 gap-6">
+            {DESKTOP_APPS.map((windowId) => {
+              const appInfo = windowInfosMap.find(
+                (window) => window.id === windowId,
+              );
+              if (!appInfo) return null;
+
+              return (
+                <DesktopIcon
+                  key={windowId}
+                  icon={appInfo.icon}
+                  label={appInfo.title}
+                  onClick={() => openWindow(windowId, appInfo)}
+                />
+              );
+            })}
+          </div>
+
+          {Object.entries(windows).map(([windowId, windowState]) => {
+            if (!windowState.isOpen || windowState.isMinimized) return null;
 
             return (
-              <DesktopIcon
+              <DraggableWindow
                 key={windowId}
-                icon={appInfo.icon}
-                label={appInfo.title}
-                onClick={() => openWindow(windowId, appInfo)}
-              />
+                title={windowState.title}
+                icon={windowState.icon}
+                zIndex={windowState.zIndex}
+                isActive={windowState.zIndex === getCurrentActiveZIndexWindow()}
+                onClose={() => closeWindow(windowId)}
+                onFocus={() => bringToFront(windowId)}
+                onMinimize={() => minimizeWindow(windowId)}
+                initialPosition={windowState.initialPosition}
+                initialSize={windowState.initialSize}
+              >
+                {windowState.content}
+              </DraggableWindow>
             );
           })}
         </div>
 
-        {Object.entries(windows).map(([windowId, windowState]) => {
-          if (!windowState.isOpen || windowState.isMinimized) return null;
+        <Taskbar
+          windows={windows}
+          currentActiveZIndexWindow={getCurrentActiveZIndexWindow()}
+          onWindowClick={handleTaskbarClick}
+          isMenuOpen={isMenuOpen}
+          onClickMenu={toggleStartMenu}
+          onOpenWindow={(windowId) => {
+            const appInfo = windowInfosMap.find(
+              (window) => window.id === windowId,
+            );
+            if (!appInfo) return;
+            openWindow(windowId, appInfo);
+          }}
+        />
 
-          return (
-            <DraggableWindow
-              key={windowId}
-              title={windowState.title}
-              icon={windowState.icon}
-              zIndex={windowState.zIndex}
-              isActive={windowState.zIndex === getCurrentActiveZIndexWindow()}
-              onClose={() => closeWindow(windowId)}
-              onFocus={() => bringToFront(windowId)}
-              onMinimize={() => minimizeWindow(windowId)}
-              initialPosition={windowState.initialPosition}
-              initialSize={windowState.initialSize}
-            >
-              {windowState.content}
-            </DraggableWindow>
-          );
-        })}
+        {isMenuOpen && (
+          <div
+            onClick={() => setIsMenuOpen(false)}
+            className="fixed inset-0 z-88888"
+          >
+            <StartMenu
+              apps={START_MENU_APPS}
+              onItemClick={(item) => {
+                const appInfo = windowInfosMap.find(
+                  (window) => window.id === item,
+                );
+                if (!appInfo) return;
+
+                openWindow(item, appInfo);
+                setIsMenuOpen(false);
+              }}
+            />
+          </div>
+        )}
       </div>
-
-      <Taskbar
-        windows={windows}
-        currentActiveZIndexWindow={getCurrentActiveZIndexWindow()}
-        onWindowClick={handleTaskbarClick}
-        isMenuOpen={isMenuOpen}
-        onClickMenu={toggleStartMenu}
-        onOpenWindow={(windowId) => {
-          const appInfo = windowInfosMap.find(
-            (window) => window.id === windowId,
-          );
-          if (!appInfo) return;
-          openWindow(windowId, appInfo);
-        }}
-      />
-
-      {isMenuOpen && (
-        <div
-          onClick={() => setIsMenuOpen(false)}
-          className="fixed inset-0 z-88888"
-        >
-          <StartMenu
-            apps={START_MENU_APPS}
-            onItemClick={(item) => {
-              const appInfo = windowInfosMap.find(
-                (window) => window.id === item,
-              );
-              if (!appInfo) return;
-
-              openWindow(item, appInfo);
-              setIsMenuOpen(false);
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 };
